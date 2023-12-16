@@ -3,3 +3,7 @@ numpy
 pandas
 pydeck
 streamlit
+Pillow
+requests
+streamlit-lottie
+PIL
