@@ -11,6 +11,7 @@ plotly
 nltk
 vaderSentiment
 scikit-learn
+matplotlib
 torch
 torchvision
 
