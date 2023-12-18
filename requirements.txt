@@ -12,6 +12,7 @@ nltk
 vaderSentiment
 scikit-learn
 matplotlib
+matplotlib.pyplot
 torch
 torchvision
 
