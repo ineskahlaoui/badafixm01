@@ -6,5 +6,12 @@ streamlit
 streamlit_lottie
 Pillow
 requests
+TextBlob
+plotly
+nltk
+vaderSentiment
+scikit-learn
+torch
+torchvision
 
 
