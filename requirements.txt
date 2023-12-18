@@ -1,6 +1,7 @@
 altair
 numpy
 pandas
+matplotlib
 pydeck
 streamlit
 streamlit_lottie
@@ -11,9 +12,5 @@ plotly
 nltk
 vaderSentiment
 scikit-learn
-matplotlib
-matplotlib.pyplot
 torch
 torchvision
-
-
