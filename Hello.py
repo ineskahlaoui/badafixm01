@@ -8,6 +8,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import generations as gen
 import emotions as emo
+import texts
 
 import streamlit as st
 
@@ -110,8 +111,13 @@ def run():
         st.subheader("XXX")
         emo.generation_emotions(movies_emotions)
 
-        st.subheader("XXX")
+        st.subheader("Emotional Intensities in Film Genres")
+        st.markdown("""
+            To what degree can emotional intensities and the positive/negative sentiment help shape the genre? 
+            We seek the answer in regression analysis.
+            """)
         emo.regression_heatmap(regression)
+        texts.regression()
 
 
     #### PART 2
