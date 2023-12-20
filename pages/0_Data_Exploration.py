@@ -21,6 +21,7 @@ def get_data():
     return df
 
 movies_summary = get_data()
+top_genres = movies_summary['Main Genre'].value_counts().head(10).index.tolist()
 
 generations_info = {
     "Lost Generation (born approximately 1883–1900)": [
@@ -66,6 +67,7 @@ generations_info = {
 }
 
 
+###### 2 ######
 st.title("Movie Trends Analysis")
 st.write(""" The social norms and values of each generation are shaped by historical events, cultural developments, technological advances, and other societal changes.
          """)
@@ -75,7 +77,16 @@ for generation, characteristics in generations_info.items():
     for char in characteristics:
         st.write("- " + char)
 
+
 exp.plot_generations_movie_releases(movies_summary)
+
+st.title("Movie Trends by Generation")
+exp.movie_count_per_generation(movies_summary)
+
+
+exp.genres_proportion(movies_summary)
+
+exp.genres_proportion_per_generation(movies_summary, top_genres)
 
 st.title("Sentiment score")
 exp.sentiment_score_distribution(movies_summary)
