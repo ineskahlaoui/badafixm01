@@ -20,6 +20,8 @@ generations_dict = {
 }
 generations = generations_dict['Generation']
 
+
+
 df_generations = pd.DataFrame(generations_dict)
 
 ## Movie releases by year (filtered with generations)
