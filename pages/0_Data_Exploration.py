@@ -5,7 +5,7 @@ from urllib.error import URLError
 import altair as alt
 import pandas as pd
 import matplotlib.pyplot as plt
-import exploration_plots as exp
+import generations as gen
 
 import streamlit as st
 
@@ -21,6 +21,7 @@ def get_data():
     return df
 
 movies_summary = get_data()
+filtered_movies = movies_summary.loc[movies_summary['Generation'] != 'Unknown Generation']
 top_genres = movies_summary['Main Genre'].value_counts().head(10).index.tolist()
 
 generations_info = {
@@ -72,22 +73,29 @@ st.title("Movie Trends Analysis")
 st.write(""" The social norms and values of each generation are shaped by historical events, cultural developments, technological advances, and other societal changes.
          """)
 
-for generation, characteristics in generations_info.items():
-    st.subheader(generation)
-    for char in characteristics:
-        st.write("- " + char)
+# for generation, characteristics in generations_info.items():
+#     st.subheader(generation)
+#     for char in characteristics:
+#         st.write("- " + char)
 
 
-exp.plot_generations_movie_releases(movies_summary)
+gen.plot_generations_movie_releases(movies_summary)
 
 st.title("Movie Trends by Generation")
-exp.movie_count_per_generation(movies_summary)
+gen.movie_count_per_generation(movies_summary)
 
 
-exp.genres_proportion(movies_summary)
+gen.genres_proportion(movies_summary)
 
-exp.genres_proportion_per_generation(movies_summary, top_genres)
+gen.genres_heatmap(filtered_movies, top_genres)
 
-st.title("Sentiment score")
-exp.sentiment_score_distribution(movies_summary)
+gen.genres_proportion_per_generation(movies_summary, top_genres)
+
+# gen.genre_porportion_for_generation(filtered_movies)
+
+gen.genre_proportion_for_generation(filtered_movies)
+
+## ADD IN PART 1
+# st.title("Sentiment score")
+# gen.sentiment_score_distribution(movies_summary)
 

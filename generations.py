@@ -1,11 +1,16 @@
-from urllib.error import URLError
-
 import streamlit as st
 import altair as alt
 import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px
 
+# Setting up a color blind friendly pallete
+CB_color_cycle = ['#377eb8','#ff7f00','#4daf4a',
+                  '#f781bf','#a65628','#984ea3',
+                  '#999999','#e41a1c','#dede00']
+
+pastel_rainbow = ['#A1C9F4', '#FFB482', '#8DE5A1', '#FF9F9B', 
+                  '#D0BBFF', '#DEBB9B', '#FAB0E4', '#CFCFCF']
 
 generations_dict = {
     "Generation": ["Lost Generation", "Greatest Generation", "Silent Generation", "Baby Boomers", 
@@ -17,8 +22,6 @@ generations = generations_dict['Generation']
 
 df_generations = pd.DataFrame(generations_dict)
 
-
-#### 1 ####
 ## Movie releases by year (filtered with generations)
 def plot_generations_movie_releases(movies_summary):
     try:
@@ -51,7 +54,6 @@ def plot_generations_movie_releases(movies_summary):
         )
 
 
-#### 2 ####
 ## Number of movies per generation
 def movie_count_per_generation(movies_summary):
     movies_per_generation = movies_summary['Generation'].value_counts().reindex(generations).fillna(0).reset_index()
@@ -91,6 +93,7 @@ def genres_proportion(movies_summary):
     st.plotly_chart(fig, use_container_width=True)
 
 
+# Proportion of top 10 genres of whole dataset for each generation
 def genres_proportion_per_generation(movies_summary, top_genres):
     # include only the top genres
     movies_top_genres = movies_summary[movies_summary['Main Genre'].isin(top_genres)]
@@ -125,28 +128,87 @@ def genres_proportion_per_generation(movies_summary, top_genres):
     # display chart
     st.altair_chart(chart, use_container_width=True)
 
+# Proportion of top 10 genres of whole dataset for each generation - heatmap version
+def genres_heatmap(movies_summary, top_genres):
+    # Filter for top genres and calculate counts
+    top_genre_data = movies_summary[movies_summary['Main Genre'].isin(top_genres)]
 
+    # chronological order
+    top_genre_data['Generation'] = pd.Categorical(top_genre_data['Generation'], 
+                                                  categories=generations, ordered=True)
+    
+    genre_counts = top_genre_data.groupby(['Generation', 'Main Genre']).size().reset_index(name='Count')
 
+    # Create the heatmap
+    heatmap = alt.Chart(genre_counts).mark_rect().encode(
+        x=alt.X('Main Genre:N', sort=top_genres),
+        y=alt.Y('Generation:O', sort=generations),
+        color=alt.Color('Count:Q', scale=alt.Scale(scheme='paired')),
+        tooltip=['Generation', 'Main Genre', 'Count']
+    ).properties(
+        width=alt.Step(40), 
+        height=600,
+        title="Heatmap of Top Genres per Generation"
+    )
 
+    st.altair_chart(heatmap, use_container_width=True) 
 
-def sentiment_score_distribution(movies_summary):
-    try:
-        # histogram of sentiment scores
-        chart = alt.Chart(movies_summary).mark_bar(opacity=0.7, color='skyblue').encode(
-            alt.X('Sentiment score plot', bin=alt.Bin(maxbins=20), title='Sentiment Score'),
-            alt.Y('count()', title='Frequency')
+def genre_porportion_for_generation(movies_summary):
+    # count of movies per genre for each generation
+    genre_counts_per_generation = (
+        movies_summary.groupby(['Generation', 'Main Genre'])
+        .size()
+        .reset_index(name='Count')
+        .sort_values(['Generation', 'Count'], ascending=[True, False])
+    )
+
+    # top genres for each generation
+    top_genres_per_generation = genre_counts_per_generation.groupby('Generation').head(10)
+
+    # individual charts for each generation
+    charts = []
+    for generation in generations:
+        generation_data = top_genres_per_generation[top_genres_per_generation['Generation'] == generation]
+        chart = alt.Chart(generation_data).mark_bar().encode(
+            x=alt.X('Main Genre', sort='-y'),
+            y='Count',
+            color='Main Genre',
+            tooltip=['Main Genre', 'Count']
         ).properties(
-            width=600,
-            height=400
-        ).interactive()
-
-        # display chart 
-        st.altair_chart(chart, use_container_width=True)
-    except:
-        st.error(
-            """
-            **An error has occured within the plotting of this function.**
-        """
+            title=f'Top Genres for {generation}',
+            width=300,
+            height=200
         )
+        charts.append(chart)
+
+    # combine into grid layout
+    combined_chart = alt.vconcat(*[alt.hconcat(*charts[i:i+3]) for i in range(0, len(charts), 3)])
+
+    st.altair_chart(combined_chart, use_container_width=True)
 
 
+def genre_proportion_for_generation(movies_summary_gen):
+    # compute top 10 genres for each generation separately
+    top_genres_per_generation = (
+        movies_summary_gen.groupby(['Generation', 'Main Genre'])
+        .size()
+        .reset_index(name='Count')
+        .groupby('Generation')
+        .apply(lambda x: x.nlargest(10, 'Count'))
+        .reset_index(drop=True)
+    )
+
+    # ensure generations are in chronological order
+    top_genres_per_generation['Generation'] = pd.Categorical(
+        top_genres_per_generation['Generation'], categories=generations, ordered=True)
+
+    # parallel  diagram
+    fig = px.parallel_categories(top_genres_per_generation, 
+                                 dimensions=['Generation', 'Main Genre'], color='Count', 
+                                 color_continuous_scale='spectral')
+
+    # Adjust figure size
+    fig.update_layout(margin=dict(l=100),  # avoid text cutting
+                      width=900, height=900)
+
+    st.plotly_chart(fig, use_container_width=True)
