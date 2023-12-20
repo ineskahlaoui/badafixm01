@@ -3,24 +3,59 @@ from streamlit.logger import get_logger
 from streamlit_lottie import st_lottie
 import requests
 from PIL import Image
+import altair as alt
+import pandas as pd
+import matplotlib.pyplot as plt
+import generations as gen
+import emotions as emo
 
+import streamlit as st
 
 # --- CONFIG --- #
 
 LOGGER = get_logger(__name__)
 
+## --- IMAGES AND ANIMATIONS --- #
+# movie_animation = load_animation("https://lottie.host/30a4816a-5b22-400d-92ab-30115ded0ab5/oh3wyo4dat.json")
+# example_img = Image.open("images/example_img.JPG")
+#st_lottie(movie_animation, speed=1, height=400, key="coding")
+#st.image(example_img, caption="This is an example image", use_column_width=True)
+
+
+# --- DATA --- #
+def get_data(filename, index_col = False):
+    if index_col:
+        df = pd.read_csv('data/' + filename, index_col=0)
+    else:     
+        df = pd.read_csv('data/' + filename)
+    df['Wikipedia Movie ID'] = pd.to_numeric(df['Wikipedia Movie ID'])    
+    return df
+
+def get_csv(filename):
+    df = pd.read_csv('data/' + filename)  
+    return df
+
+
+movies_summary = get_data('movies_summary.csv')
+emotions = get_data('MovieIDs_emotions.csv', index_col=True)
+emotions_pca = get_csv('emotion_pca.csv')
+emotions_tsne = get_csv('emotion_tsne.csv')
+regression = get_csv('regression_params.csv')
+
+filtered_movies = movies_summary.loc[movies_summary['Generation'] != 'Unknown Generation']
+movies_emotions = emotions.merge(filtered_movies, on='Wikipedia Movie ID', how='left')
+top_genres = movies_summary['Main Genre'].value_counts().head(10).index.tolist()
+
+# --- PAGES --- #
+
 def run():
-    st.set_page_config(page_title="Feel the genres", page_icon=":sparkles:", layout="wide")
+    st.set_page_config(page_title="Feel the genres", page_icon=":sparkles:", layout="wide", initial_sidebar_state="collapsed")
 
     def load_animation(url: str):
         r = requests.get(url)
         if r.status_code != 200:
             return None
         return r.json()
-
-    ## --- IMAGES AND ANIMATIONS --- #
-    movie_animation = load_animation("https://lottie.host/30a4816a-5b22-400d-92ab-30115ded0ab5/oh3wyo4dat.json")
-    example_img = Image.open("images/example_img.JPG")
 
     # --- STYLE --- #
 
@@ -44,49 +79,70 @@ def run():
             st.write("The [data](https://www.cs.cmu.edu/~ark/personas/) was collected by David Bamman, Brendan O'Connor, and Noah Smith at the Language Technologies Institute and Machine Learning Department at Carnegie Mellon University, and the project is made with [Streamlit](https://streamlit.io/).")
             st.write("The project is hosted on [GitHub](https://ineskahlaoui.github.io/badafixm01/)")
             st.subheader("The team")
-            st.write("[Inès Kahlaoui](https://www.instagram.com/ines_kahlaoui/), [Mya Lahjouji](https://www.instagram.com/myalahjouji/), Berta Céspedes, Xiaocheng Zhang and Fernando Meireles")
+            st.write("[Inès Kahlaoui](https://www.linkedin.com/in/in%C3%A8s-kahlaoui-0862b71b8), [Mya Lahjouji](https://www.linkedin.com/in/mya-lahjouji-b05457233), [Berta Céspedes](https://www.linkedin.com/in/bertacespedes), Xiaocheng Zhang and [Fernando Meireles](https://www.linkedin.com/in/fernando-augusto-meireles-948a58157)")
             st.write("External libraries and frameworks used : ... to be completed ...")
 
-    # --- MAIN --- #
+    # --- DATA STORY --- #
+            
+    #### PART 1        
     with st.container():
-        st.subheader("Part XX : if needed, this is how u create double columns & add cool animations")
+        st.title("Part 1 : XX")
         col1, col2 = st.columns(2)
         with col1:
             st.header("Column 1")
             st.write(""" 
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                    when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.""")
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.""")
         with col2:
             st.header("Column 2")
-            st_lottie(movie_animation, speed=1, height=400, key="coding")
+            
+        st.subheader("XXX")
+        emo.emotions_along_time(movies_emotions, emotions)
+
+        st.subheader("XXX")
+        emo.heatmap_emotions_genre(movies_emotions, top_genres)
+
+        st.subheader("XXX")
+        emo.emotion_clusters(movies_emotions, top_genres, 'TSNE', emotions_tsne)
+
+        st.subheader("XXX")
+        emo.emotion_clusters(movies_emotions, top_genres, 'PCA', emotions_pca)
+
+        st.subheader("XXX")
+        emo.generation_emotions(movies_emotions)
+
+        st.subheader("XXX")
+        emo.regression_heatmap(regression)
 
 
-
+    #### PART 2
     with st.container():
-        st.subheader("Part XX : if needed, this is how u create additional parts")
-
-
-        st.header("subpart 1")
-        st.write(""" 
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                    when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.""")
+        st.title("Part 2 : XX")
+        st.subheader("XXX")
         
-        st.header("subpart 2 - this is how u add an image")
-        st.image(example_img, caption="This is an example image", use_column_width=True)
+        gen.plot_generations_movie_releases(movies_summary)
+
+        st.subheader("XXX")
+        gen.movie_count_per_generation(movies_summary)
+
+        st.subheader("XXX")
+        gen.genres_proportion(movies_summary)
+
+        st.subheader("XXX")
+        gen.genres_heatmap(filtered_movies, top_genres)
+
+        st.subheader("XXX")
+        gen.genres_proportion_per_generation(movies_summary, top_genres)
+
+        st.subheader("XXX")
+        gen.genre_proportion_for_generation(filtered_movies)
 
 
     # --- FOOTER --- #
     with st.container():
-        st.subheader("Part XX : if needed, this is how u add a footer")
-        st.write("This is a footer")
-        st.write("This is another footer")
-        st.write("This is a third footer")
+        st.title("Part 3 : XX")
+        st.subheader("XXX")
+        st.subheader("XXX")
+        st.subheader("XXX")
      
         
 if __name__ == "__main__":

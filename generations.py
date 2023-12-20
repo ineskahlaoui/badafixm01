@@ -122,12 +122,8 @@ def genres_proportion_per_generation(movies_summary, top_genres):
         y=alt.Y('Proportion:Q', stack='normalize'),
         color='Genre:N',
         tooltip=['index', 'Genre', alt.Tooltip('Proportion:Q', format='.1%')]
-    ).properties(
-        width=700,
-        height=400
-    )
+    ).properties(width=700,height=400)
 
-    # display chart
     st.altair_chart(chart, use_container_width=True)
 
 # Proportion of top 10 genres of whole dataset for each generation - heatmap version
@@ -145,7 +141,7 @@ def genres_heatmap(movies_summary, top_genres):
     heatmap = alt.Chart(genre_counts).mark_rect().encode(
         x=alt.X('Main Genre:N', sort=top_genres),
         y=alt.Y('Generation:O', sort=generations),
-        color=alt.Color('Count:Q', scale=alt.Scale(scheme='paired')),
+        color=alt.Color('Count:Q', scale=alt.Scale(scheme='spectral')),
         tooltip=['Generation', 'Main Genre', 'Count']
     ).properties(
         width=alt.Step(40), 
@@ -153,7 +149,16 @@ def genres_heatmap(movies_summary, top_genres):
         title="Heatmap of Top Genres per Generation"
     )
 
-    st.altair_chart(heatmap, use_container_width=True) 
+    text = heatmap.mark_text(baseline='middle').encode(
+        text=alt.Text('Count:Q'),
+        color=alt.condition(
+            alt.datum.Count > 950,
+            alt.value('black'),  # light background
+            alt.value('white')   # dark background
+        )
+    )
+
+    st.altair_chart(heatmap + text, use_container_width=True) 
 
 def genre_porportion_for_generation(movies_summary):
     # count of movies per genre for each generation
