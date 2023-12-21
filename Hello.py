@@ -60,9 +60,24 @@ def run():
 
     # --- STYLE --- #
 
+    # if needed
     def upload_css(file_name):
         with open(file_name) as f:
             st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+    def set_css():
+        css = """
+        <style>
+            /* Main page layout */
+            .main .block-container {
+                padding-right: 10rem;   
+                padding-left: 10rem;    
+            }
+        </style>
+        """
+        st.markdown(css, unsafe_allow_html=True)
+
+    set_css()
 
     # --- HEADER --- #
     with st.container():

@@ -16,9 +16,6 @@ generations = ["Lost Generation", "Greatest Generation", "Silent Generation", "B
                    "Generation X", "Millennials", "Generation Z", "Generation Alpha"]
 default_colors = px.colors.qualitative.Plotly
 
-
-## FERNANDO's PLOTS
-
 ## emotions along the plots (4 genres)
 def emotions_along_time(movies_emotions, df_emotions):
     movies_emotions_norm = movies_emotions.copy()
@@ -68,7 +65,6 @@ def emotions_along_time(movies_emotions, df_emotions):
 
 
 ## Heatmap of emotions
-    
 def format_emotions_data(movies_emotions, top_genres):
     cols = emotions_cols + ['Main Genre']
     heatmap_data = movies_emotions[cols]
@@ -138,6 +134,7 @@ def emotion_clusters(movies_emotions, top_genres, method_name, df_reduced):
         st.plotly_chart(fig2, use_container_width=True)
 
 
+# Generations and emotions
 def generation_emotions(movies_emotions):
     cols = emotions_cols + ['Generation']
     generation_emotions = movies_emotions[cols]
