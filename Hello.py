@@ -70,8 +70,12 @@ def run():
         <style>
             /* Main page layout */
             .main .block-container {
-                padding-right: 10rem;   
-                padding-left: 10rem;    
+                padding-right: 12rem;   
+                padding-left: 12rem;    
+            }
+            .justified-text {
+                text-align: justify;
+                text-justify: inter-word;
             }
         </style>
         """
@@ -83,7 +87,7 @@ def run():
     with st.container():
         st.title(":sparkles: Feel the genres :sparkles:, by Badafixm01")
         st.subheader("A data analysis story about movie genres and emotions")
-        st.write("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.")
+        texts.introduction()
 
     # --- SIDEBAR --- #
     with st.container():

@@ -26,7 +26,13 @@ def emotions_along_time(movies_emotions, df_emotions):
     # select emotions to display
     emotions = df_emotions.columns[1:9].tolist()
     selected_emotions = st.multiselect('Select emotions to display:', emotions, default=emotions)
-    color_map = {emotion: color for emotion, color in zip(emotions, px.colors.qualitative.Plotly)}
+    color_map = {emotion: color for emotion, color in zip(emotions, default_colors)}
+
+    # aggregating emotion values per year
+    columns_to_plot = emotions_cols + ['Main Genre', 'Movie Release Year']
+    movies_emotions_norm = movies_emotions_norm[columns_to_plot]
+    movies_emotions_norm = movies_emotions_norm.groupby(['Main Genre', 'Movie Release Year']).mean()
+    movies_emotions_norm = movies_emotions_norm.reset_index()
 
     # 2x2 grid
     fig = make_subplots(rows=2, cols=2, subplot_titles=genres, shared_yaxes=True)

@@ -1,5 +1,20 @@
 import streamlit as st
 
+def introduction():
+    st.markdown("""<div class='justified-text'>
+    Dear movie adepts and graph gurus, welcome to a spectacle where movies and charts converge into a narrative as captivating as cinema itself…
+    In our story, every frame is a figure and every genre a graph, as we delve into the rich dataset of 
+    <a href="https://www.cs.cmu.edu/~ark/personas/" target="_blank">movies</a> and 
+    <a href="https://saifmohammad.com/WebPages/AffectIntensity.htm" target="_blank">Emotion Intensity Lexicon</a> to see not just the 
+    stories on screen but also the emotions they stir in us, all through the power of data!
+    From the epic heroes of the Silent generation to the digital natives of Gen Z (us!),
+    each bringing their own flair to the big screen, we propose you a century-long timeline a period rich with wars, 
+    peace, crises, and prosperity in waves of drama, mystery, romance, and more. 
+    No prior knowledge is required, just an appetite for discovery and a love for the silver screen.
+    So, pop the popcorn, dim the lights, and let this data illuminate this new story of 
+    cinema like you’ve never before. 🍿 Cameras rolling... Action! 🎬 
+    </div>""", unsafe_allow_html=True)
+
 
 def regression():
     st.subheader("Methodology")
