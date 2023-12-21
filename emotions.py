@@ -200,6 +200,7 @@ def regression_heatmap(df_params):
     st.altair_chart(heatmap + text, use_container_width=True)
 
 
+    
 def sentiment_score_distribution(movies_summary):
     try:
         # histogram of sentiment scores

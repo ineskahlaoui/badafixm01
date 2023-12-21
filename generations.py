@@ -219,3 +219,7 @@ def genre_proportion_for_generation(movies_summary_gen):
                       width=900, height=900)
 
     st.plotly_chart(fig, use_container_width=True)
+
+
+## number of movies released per generation
+## average sentiment score per generation

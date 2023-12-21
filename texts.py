@@ -30,3 +30,32 @@ def regression():
     """)
 
 
+def emotion_lines():
+    st.markdown("""We observe that for all genres our average emotion score for years before 1940 tend to be more messy, 
+                but this is an effect of the comparetively low number of movies release in these decades when compared to the following years. 
+                Impressively, we can see that most genres do reach a stable ordering of emotions throught the years! 
+                Words associated with fear are clearly dominant in Horror, Crime Fiction, and Thrillers, while Romantic comedies and 
+                Romance movies are dominated by joy/trust followed by anticipation words. 
+                It is really interesting to see that these genres seem to have their own emotional signature (at least on average!). 
+                Let explore this a bit further... """)
+    
+
+def emotion_heatmap():
+    st.markdown("""This heatmap gives us a better overal idea of how emotions are distributed in these genres. 
+                Trust seems to be evoked in many genres except in Horror (I guess there's no trusting a guy chasing you with a chainsaw), 
+                while fear is prevalent not only in obviously spooky/tense movie genres but also in action and science fiction! 
+                This gives us a very interesting and general insight on how the edge/future of technology is portrayed in cinema. 
+                Maybe we have a tendency to be pessimistic about the future?""")
+    
+def emotion_clusters():
+    st.markdown("""As we observe it's not as simple as we thought, the latent emotion space of our movies 
+                overlap quite a bit and don't really ressemble the clusters obtained by K-means. 
+                Notheless, we can still notice that Romantic Comedy and Romance separate pretty well from 
+                Action/Adventure, Thriller, Horror. If we want to actually discriminate movie genres based 
+                on emotions we'd need a more sophisticated approach. 
+                We'll come back to this later...""")
+    
+
+def emotion_generations():
+    st.markdown("""As we can see it doesn't seem to change at all! 
+                The average emotional content of the summaries is basically the same to all generations.""")

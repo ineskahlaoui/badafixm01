@@ -97,19 +97,31 @@ def run():
             st.header("Column 2")
             
         st.subheader("XXX")
+        st.markdown("""We'll now check how each of the eight basic emotions evolved for each of the main genres over the years. 
+                    Are the emotions randomly distributed per genre? Do they represent trends that shift over time?""")
         emo.emotions_along_time(movies_emotions, emotions)
+        texts.emotion_lines()
 
         st.subheader("XXX")
         emo.heatmap_emotions_genre(movies_emotions, top_genres)
+        texts.emotion_heatmap()
 
         st.subheader("XXX")
+        st.markdown("""Given that we had many hints that certain genres have certain signatures with respect to emotions we had to ask: 
+                    Can we easily identify a movie genre by simply clustering it by the emotions its summary evokes? Let's try!""")
         emo.emotion_clusters(movies_emotions, top_genres, 'TSNE', emotions_tsne)
 
         st.subheader("XXX")
         emo.emotion_clusters(movies_emotions, top_genres, 'PCA', emotions_pca)
+        texts.emotion_clusters()
+
 
         st.subheader("XXX")
+        st.markdown("""We'll now give a look at how different emotions are overall distributed in the different generations. 
+                    Does the cinema lexicon change from generation to generation or the emotional content stays the same throughout time?""")
         emo.generation_emotions(movies_emotions)
+        texts.emotion_generations()
+        
 
         st.subheader("Emotional Intensities in Film Genres")
         st.markdown("""
