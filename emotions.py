@@ -16,6 +16,10 @@ generations = ["Lost Generation", "Greatest Generation", "Silent Generation", "B
                    "Generation X", "Millennials", "Generation Z", "Generation Alpha"]
 default_colors = px.colors.qualitative.Plotly
 
+plotly_red = '#ef553b'
+plotly_white = 'white'
+plotly_blue = '#636efa'
+
 ## emotions along the plots (4 genres)
 def emotions_along_time(movies_emotions, df_emotions):
     movies_emotions_norm = movies_emotions.copy()
@@ -85,10 +89,13 @@ def heatmap_emotions_genre(movies_emotions, top_genres):
     grouped_df = heatmap_data.groupby('Main Genre').mean().reset_index()
     long_df = grouped_df.melt('Main Genre', var_name='Emotion', value_name='Score')
 
-    # drawing heatmap
+    # heatmap architecture
+    domain = [long_df['Score'].min(), long_df['Score'].median(), long_df['Score'].max()]
+    color_range = [plotly_red, plotly_white, plotly_blue]
+
     heatmap = alt.Chart(long_df).mark_rect().encode(
         x=alt.X('Emotion:N', title='Emotion'), y=alt.Y('Main Genre:N', title='Main Genre', sort=top_genres),
-        color=alt.Color('Score:Q', scale=alt.Scale(scheme='spectral'), title='Score'),
+        color=alt.Color('Score:Q', scale= alt.Scale(domain=domain, range=color_range), title='Score'),
         tooltip=['Main Genre', 'Emotion', 'Score']
     ).properties(width=alt.Step(40), height=600,
         title='Emotion scores by main genre')
@@ -107,9 +114,12 @@ def heatmap_emotions_genre(movies_emotions, top_genres):
 ## reduction & clustering
 def emotion_clusters(movies_emotions, top_genres, method_name, df_reduced):
     cluster_data = format_emotions_data(movies_emotions, top_genres)
-
-    cluster_data.dropna(inplace=True)
     df_reduced = df_reduced.join(cluster_data['Main Genre'])
+
+    hover_data = {'Movie Name': True}
+
+    df_reduced['Labels'] = df_reduced['Labels'].astype(str)
+    color_discrete_map = {str(label): color for label, color in zip(df_reduced['Labels'].unique(), default_colors)}
 
     # plotting by actual movie genre
     fig1 = px.scatter(
@@ -122,15 +132,16 @@ def emotion_clusters(movies_emotions, top_genres, method_name, df_reduced):
         labels={'color': 'Main Genre'}
     )
 
+    df_reduced = df_reduced.sort_values(by='Labels')
     # plotting by identified K-means cluster
     fig2 = px.scatter(
         df_reduced,
         x=f'{method_name}1',
         y=f'{method_name}2',
         color='Labels',
-        color_continuous_scale = default_colors,
         title=f"Discovered Clusters - {method_name}",
-        labels={'color': 'Cluster Labels'}
+        labels={'color': 'Cluster Labels'},
+        color_discrete_map={str(label): color for label, color in zip(df_reduced['Labels'].unique(), default_colors)}
     )
 
     col1, col2 = st.columns(2)
@@ -164,7 +175,7 @@ def generation_emotions(movies_emotions):
         color='Emotion:N',
         order=alt.Order('Emotion:N', sort='ascending') 
     ).properties(title='Distribution of emotions across generations',
-                 width=600,height=400)
+                 width=600,height=700)
 
     st.altair_chart(chart, use_container_width=True)
 
@@ -178,11 +189,14 @@ def regression_heatmap(df_params):
     # Melt the DataFrame to long format for Altair
     melted_df = df_params.reset_index().melt(id_vars='Predictor', var_name='Genre', value_name='Value')
 
-    # heatmat architecture
+    # heatmat architecture    
+    domain = [melted_df['Value'].min(), 0, melted_df['Value'].max()]
+    color_range = [plotly_red, plotly_white, plotly_blue]
+    
     heatmap = alt.Chart(melted_df).mark_rect().encode(
         x=alt.X('Genre:N', title='Genre', axis=alt.Axis(labelAngle=-45)),
         y=alt.Y('Predictor:N', title='Predictor'),
-        color=alt.Color('Value:Q', scale=alt.Scale(scheme='spectral')),
+        color=alt.Color('Value:Q', scale = alt.Scale(domain=domain, range=color_range)),
         tooltip=[
             alt.Tooltip('Predictor:N', title='Predictor'),
             alt.Tooltip('Genre:N', title='Genre'),

@@ -3,6 +3,7 @@ import altair as alt
 import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px
+import numpy as np
 
 # Setting up a color blind friendly pallete
 CB_color_cycle = ['#377eb8','#ff7f00','#4daf4a',
@@ -224,17 +225,21 @@ def genre_proportion_for_generation(movies_summary_gen):
     )
 
     # ensure generations are in chronological order
-    top_genres_per_generation['Generation'] = pd.Categorical(
-        top_genres_per_generation['Generation'], categories=generations, ordered=True)
+    top_genres_per_generation['Generation'] = pd.Categorical(top_genres_per_generation['Generation'], categories=generations, ordered=True)
 
     # parallel  diagram
+    # manually computed percentiles
+    color_scale = [[0, '#636EFA'],[0.009, '#19D3F3'],[0.051, '#00CC96'],[0.065, '#B6E880'],[0.080, '#FFA15A'],[0.092, '#FECB52'],
+                   [0.109, '#FF6692'],[0.175, '#FF97FF'],[0.225, '#EF553B'],[1, '#AB63FA']]
+    genre_order = (top_genres_per_generation.groupby('Main Genre')['Count'].sum().sort_values(ascending=False).index.tolist())
     fig = px.parallel_categories(top_genres_per_generation, 
                                  dimensions=['Generation', 'Main Genre'], color='Count', 
-                                 color_continuous_scale='spectral')
+                                 color_continuous_scale=color_scale)
 
+    
     # Adjust figure size
     fig.update_layout(margin=dict(l=100),  # avoid text cutting
-                      width=900, height=900)
+                      width=900, height=1100)
 
     st.plotly_chart(fig, use_container_width=True)
 

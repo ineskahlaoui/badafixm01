@@ -104,9 +104,31 @@ def run():
 
     # --- DATA STORY --- #
             
-    #### PART 1        
+    #### PART 1 ####
     with st.container():
         st.title("Part 1 : XX")
+        st.subheader("XXX")
+        
+        gen.plot_generations_movie_releases(movies_summary)
+
+        st.subheader("XXX")
+        gen.movie_count_per_generation(movies_summary)
+
+        st.subheader("XXX")
+        gen.genres_proportion(movies_summary)
+
+        st.subheader("XXX")
+        gen.genres_heatmap(filtered_movies, top_genres)
+
+        st.subheader("XXX")
+        gen.genres_proportion_per_generation(movies_summary, top_genres)
+
+        st.subheader("XXX")
+        gen.genre_proportion_for_generation(filtered_movies)
+            
+    #### PART 2 ####       
+    with st.container():
+        st.title("Part 2 : XX")
         col1, col2 = st.columns(2)
         with col1:
             st.header("Column 1")
@@ -134,14 +156,6 @@ def run():
         emo.emotion_clusters(movies_emotions, top_genres, 'PCA', emotions_pca)
         texts.emotion_clusters()
 
-
-        st.subheader("XXX")
-        st.markdown("""We'll now give a look at how different emotions are overall distributed in the different generations. 
-                    Does the cinema lexicon change from generation to generation or the emotional content stays the same throughout time?""")
-        emo.generation_emotions(movies_emotions)
-        texts.emotion_generations()
-        
-
         st.subheader("Emotional Intensities in Film Genres")
         st.markdown("""
             To what degree can emotional intensities and the positive/negative sentiment help shape the genre? 
@@ -151,27 +165,17 @@ def run():
         texts.regression()
 
 
-    #### PART 2
-    with st.container():
-        st.title("Part 2 : XX")
         st.subheader("XXX")
+        st.markdown("""We'll now give a look at how different emotions are overall distributed in the different generations. 
+                    Does the cinema lexicon change from generation to generation or the emotional content stays the same throughout time?""")
+        emo.generation_emotions(movies_emotions)
+        texts.emotion_generations()
         
-        gen.plot_generations_movie_releases(movies_summary)
 
-        st.subheader("XXX")
-        gen.movie_count_per_generation(movies_summary)
+        
 
-        st.subheader("XXX")
-        gen.genres_proportion(movies_summary)
 
-        st.subheader("XXX")
-        gen.genres_heatmap(filtered_movies, top_genres)
-
-        st.subheader("XXX")
-        gen.genres_proportion_per_generation(movies_summary, top_genres)
-
-        st.subheader("XXX")
-        gen.genre_proportion_for_generation(filtered_movies)
+    
 
 
     # --- FOOTER --- #
