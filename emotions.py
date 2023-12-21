@@ -167,15 +167,18 @@ def generation_emotions(movies_emotions):
     generation_emotions['Generation'] = pd.Categorical(generation_emotions['Generation'], categories=generations + ['All Generations'], ordered=True)
     generation_emotions = generation_emotions.sort_values('Generation')
 
+    domain = emotions_cols
+    range_ = default_colors[:len(domain)]
+
     # stacked bar chart architecture
     generation_emotions_long = generation_emotions.melt('Generation', var_name='Emotion', value_name='Proportion')
     chart = alt.Chart(generation_emotions_long).mark_bar().encode(
         x=alt.X('Generation:N', title='Generation', sort=list(generation_emotions['Generation'].cat.categories), axis=alt.Axis(labelAngle=45)),
         y=alt.Y('sum(Proportion):Q', title='Proportion of emotions'),
-        color='Emotion:N',
+        color=alt.Color('Emotion:N', scale=alt.Scale(domain=domain, range=range_)),
         order=alt.Order('Emotion:N', sort='ascending') 
     ).properties(title='Distribution of emotions across generations',
-                 width=600,height=700)
+                 width=600,height=600)
 
     st.altair_chart(chart, use_container_width=True)
 

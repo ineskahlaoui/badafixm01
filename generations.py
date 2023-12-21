@@ -4,14 +4,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px
 import numpy as np
+import colorsys
 
-# Setting up a color blind friendly pallete
-CB_color_cycle = ['#377eb8','#ff7f00','#4daf4a',
-                  '#f781bf','#a65628','#984ea3',
-                  '#999999','#e41a1c','#dede00']
 
-pastel_rainbow = ['#A1C9F4', '#FFB482', '#8DE5A1', '#FF9F9B', 
-                  '#D0BBFF', '#DEBB9B', '#FAB0E4', '#CFCFCF']
+default_colors = px.colors.qualitative.Plotly
 
 generations_dict = {
     "Generation": ["Lost Generation", "Greatest Generation", "Silent Generation", "Baby Boomers", 
@@ -20,7 +16,6 @@ generations_dict = {
     "End Year": [1900, 1927, 1945, 1964, 1980, 1996, 2009, 2023]
 }
 generations = generations_dict['Generation']
-
 df_generations = pd.DataFrame(generations_dict)
 
 ## Movie releases by year (filtered with generations)
@@ -105,7 +100,7 @@ def genres_proportion(movies_summary):
     # create pie chart architecture
     fig = px.pie(genre_df, names='Main Genre', values='Percentage',
                  title='Top 10 Movie Main Genres Distribution', ## REMOVE TITLE AFTERWARDS
-                 hover_data=['Main Genre'], labels={'Main Genre':'Genre'})
+                 hover_data=['Main Genre'], labels={'Main Genre':'Genre'}, color_discrete_sequence = default_colors)
     
     # display percentages on chart and pull slices out
     fig.update_traces(textinfo='percent+label', pull=[0.1] * genre_df.shape[0])
@@ -136,12 +131,16 @@ def genres_proportion_per_generation(movies_summary, top_genres):
 
     # stacked bar chart architecture
     data_long = genre_by_generation_normalized.melt('index', var_name='Genre', value_name='Proportion')
+
+    domain = top_genres
+    range_ = default_colors[:len(domain)]
+
     chart = alt.Chart(data_long).mark_bar().encode(
         x=alt.X('index:N', sort=generations + ['All Generations']),  # Explicitly sort the x-axis
         y=alt.Y('Proportion:Q', stack='normalize'),
-        color='Genre:N',
+        color=alt.Color('Genre:N', scale=alt.Scale(domain=domain, range=range_)),
         tooltip=['index', 'Genre', alt.Tooltip('Proportion:Q', format='.1%')]
-    ).properties(width=700,height=400)
+    ).properties(width=700,height=500)
 
     st.altair_chart(chart, use_container_width=True)
 
@@ -151,21 +150,21 @@ def genres_heatmap(movies_summary, top_genres):
     top_genre_data = movies_summary[movies_summary['Main Genre'].isin(top_genres)]
 
     # chronological order
-    top_genre_data['Generation'] = pd.Categorical(top_genre_data['Generation'], 
-                                                  categories=generations, ordered=True)
-    
+    top_genre_data['Generation'] = pd.Categorical(top_genre_data['Generation'], categories=generations, ordered=True)
     genre_counts = top_genre_data.groupby(['Generation', 'Main Genre']).size().reset_index(name='Count')
 
-    # Create the heatmap
+    # heatmap architecture
+    rainbow_colors = sorted(default_colors, key=lambda rgb: colorsys.rgb_to_hsv(*[int(rgb.lstrip('#')[i:i+2], 16) for i in (0, 2, 4)]))
+
     heatmap = alt.Chart(genre_counts).mark_rect().encode(
         x=alt.X('Main Genre:N', sort=top_genres),
         y=alt.Y('Generation:O', sort=generations),
-        color=alt.Color('Count:Q', scale=alt.Scale(scheme='spectral')),
+        color=alt.Color('Count:Q', scale=alt.Scale(range=rainbow_colors)),
         tooltip=['Generation', 'Main Genre', 'Count']
     ).properties(
         width=alt.Step(40), 
         height=600,
-        title="Heatmap of Top Genres per Generation"
+        title="Heatmap of top genres per generation"
     )
 
     text = heatmap.mark_text(baseline='middle').encode(
@@ -174,8 +173,7 @@ def genres_heatmap(movies_summary, top_genres):
             alt.datum.Count > 950,
             alt.value('black'),  # light background
             alt.value('white')   # dark background
-        )
-    )
+        ))
 
     st.altair_chart(heatmap + text, use_container_width=True) 
 
