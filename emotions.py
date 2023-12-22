@@ -97,8 +97,7 @@ def heatmap_emotions_genre(movies_emotions, top_genres):
         x=alt.X('Emotion:N', title='Emotion'), y=alt.Y('Main Genre:N', title='Main Genre', sort=top_genres),
         color=alt.Color('Score:Q', scale= alt.Scale(domain=domain, range=color_range), title='Score'),
         tooltip=['Main Genre', 'Emotion', 'Score']
-    ).properties(width=alt.Step(40), height=600,
-        title='Emotion scores by main genre')
+    ).properties(width=alt.Step(40), height=600)
     
     text = heatmap.mark_text(baseline='middle').encode(
         text=alt.Text('Score:Q', format='.2f'),
@@ -177,8 +176,7 @@ def generation_emotions(movies_emotions):
         y=alt.Y('sum(Proportion):Q', title='Proportion of emotions'),
         color=alt.Color('Emotion:N', scale=alt.Scale(domain=domain, range=range_)),
         order=alt.Order('Emotion:N', sort='ascending') 
-    ).properties(title='Distribution of emotions across generations',
-                 width=600,height=600)
+    ).properties(width=600,height=600)
 
     st.altair_chart(chart, use_container_width=True)
 
@@ -205,7 +203,7 @@ def regression_heatmap(df_params):
             alt.Tooltip('Genre:N', title='Genre'),
             alt.Tooltip('Value:Q', title='Value', format='.3f')
         ]
-    ).properties(height=500, title="Heatmap of predictor by genre")
+    ).properties(height=500)
 
     # Create text labels for the heatmap
     text = heatmap.mark_text(baseline='middle').encode(

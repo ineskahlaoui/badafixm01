@@ -1,7 +1,9 @@
 import streamlit as st
 
-def format_text(text, size= "18px"):
-    st.markdown(f"""<div class='justified-text' style='text-align: justify; font-size: {size};'>{text}</div>""", unsafe_allow_html=True)
+
+def format_text(text, size="18px", bottom_margin="16px"):
+    st.markdown(f"""<div class='justified-text' style='text-align: justify; font-size: {size}; margin-bottom: {bottom_margin};'>{text}</div>""", unsafe_allow_html=True)
+
 
 def introduction():
     format_text("""Dear movie adepts and graph gurus, welcome to a spectacle where movies and charts converge into a narrative as captivating as cinema itself…
@@ -14,72 +16,138 @@ def introduction():
     peace, crises, and prosperity in waves of drama, mystery, romance, and more. 
     No prior knowledge is required, just an appetite for discovery and a love for the silver screen.
     So, pop the popcorn, dim the lights, and let this data illuminate this new story of 
-    cinema like you’ve never before. 🍿 Cameras rolling... Action! 🎬 """)
+    cinema like you’ve never before.""") 
+    format_text("""🍿 Cameras rolling... Action! 🎬 """)
 
+
+def regression_intro():
+    format_text("""To what degree can emotional intensities and the positive/negative sentiment 
+                help shape the genre? We seek the answer in regression analysis. """, bottom_margin = "60px")
 
 def regression():
-    st.subheader("Methodology")
-
-    # Description of the methodology
-    format_text("""
-    An Ordinary Least Squares model was constructed for each genre using sentiment scores and the intensities of eight emotions as predictors. 
-                The data underwent paired matching on countries, languages, generation, and runtime to mitigate the effect of confounding factors. 
-                The heatmap displays the slopes of linear regressions between one-hot encoded genres and emotion intensities and sentiment score of movie plot summaries.
-                 All visualized slopes are statistically significant \(p < 0.05\). 
-                The slopes indicate the degree that an emotion or sentiment shapes the likelihood that a movie belongs to a genre. 
-                Indeed, there are interesting patterns of emotional influence in some genres:
+    format_text("""We constructed an ensemble of Ordinary Least Squares models, one for each genre, 
+                with paired matching on country, language, generation, and runtime of the movies. 
+                The resulting heatmap of statistically significant (p<0.05) linear regression slopes 
+                portrays how the different genres are woven by hues of emotions and sentiments. 
+                Positive values indicate a positive association of the emotion or the sentiment 
+                score with the likelihood that a movie belongs to this genre, and vice versa. 
+                Now, let’s begin our quest to the land of genres and visit the emotional building blocks 
+                that shape each one.
     """)
 
-    st.subheader("Key Findings")
+def regression_findings():
+    format_text("""The Thriller genre stands as the most compelling connection with emotions. 
+                Fear and joy correlate positively and negatively with this genre, respectively, 
+                aligning with its weakly negative relationship with the sentiment score. 
+                You can’t stay chill when unraveling the mysteries of a Hitchcockian plot, can you? 
+                Contrasting with Thriller, Romantic Comedy dances with joy but flinches at fear. 
+                These trends paint a light-hearted atmosphere within the genre. In Crime Fiction, 
+                anger takes center stage while joy seems out of place, mirroring the tense and dramatic 
+                nature in crime narratives. As a container of diverse emotions, the Drama genre exhibits 
+                positive correlations to joy and sadness and negative correlations to fear, anger, and surprise, 
+                implying the rich and varied nature of storytelling within dramas. """)
 
+def emotion_lines_intro():
+    format_text("""Time to unravel the emotional content of movie genres over the ages! 
+                Are the eight basic emotions sprinkled randomly across genres, or do they follow predictable trends? 
+                Let's find out!""", bottom_margin = "60px")
+    
+
+def emotion_dataset():
     format_text("""
-    -   **Tension in Thriller:** The `Thriller` genre show the strongest association with emotions. 
-                Notably, `fear` and `joy` exhibit a positive and negative correlations with the probability of this genre, respectively, suggesting a generally negative emotional tone. 
-                This observation aligns with the genre's weakly negative relationship with the sentiment score. 
-    -   **Light Mood in Romantic Comedy:** In contrast, the `Romantic Comedy` genre shows opposite trends in its relationship with `fear`, `joy`, 
-                and sentiment score compared to `Thriller`. These trends indicate a light mood within the genre.
-    -   **Anger in Crime Fiction**: The `Crime Fiction` genre has a positive association with `anger` and a negative link with `joy`. 
-                This suggests that crime narratives evoke intense emotions, reflecting the tense and dramatic nature of such plots.
-    -   **Diverse Emotions in Drama:** The genre `Drama` exhibits a diverse emotional landscape, characterized by positive correlations with
-                 `joy` and `sadness` and negative correlations with `fear`, `anger` and `surprise`. 
-                This complexity in emotions implies the rich and varied nature of storytelling within dramas.
-    """)
+                We've delved into the treasure trove known as the 
+                <a href="http://saifmohammad.com/WebPages/AffectIntensity.htm" target="_blank">NRC Emotion Intensity Lexicon</a>
+                 by the 
+                <a href="https://arxiv.org/abs/1704.08798" target="_blank">Dr. Saif M. Mohammad and team</a> to experience an emotional odyssey through the realm of movies. 
+                It's like a dictionary, but for emotions! Each word in this manually built dictionary has a score on a scale of 0 to 1, 
+                using the 
+                <a href="http://saifmohammad.com/WebPages/BestWorst.html" target="_blank">Best-Worst Scaling method</a>, 
+                for each one of eight basic emotions: 
+                fear, joy, anger, trust, anticipation, disgust, sadness, and surprise. 
+                Armed with this lexicon, we've scored the emotional content of every word in our plot summaries, 
+                giving us an emotional fingerprint of all of our movies! Let's hop on the feels train and see 
+                what sort of cool stuff we can get from emotions in movies!""")
 
 
 def emotion_lines():
-    format_text("""We observe that for all genres our average emotion score for years before 1940 tend to be more messy, 
-                but this is an effect of the comparetively low number of movies release in these decades when compared to the following years. 
-                Impressively, we can see that most genres do reach a stable ordering of emotions throught the years! 
-                Words associated with fear are clearly dominant in Horror, Crime Fiction, and Thrillers, while Romantic comedies and 
-                Romance movies are dominated by joy/trust followed by anticipation words. 
-                It is really interesting to see that these genres seem to have their own emotional signature (at least on average!). 
-                Let explore this a bit further... """)
+    format_text("""Let's now hop on our cinematic time machine! 
+                Before 1940, the overall emotions seem to get a bit wild – well, not because people were more wild, 
+                just because of the sparse movie releases. But as we fast forward, 
+                some genres seem to find their emotional fingerprints. 
+                Horror, Crime Fiction, and Thrillers? Fear takes the lead. 
+                Romantic comedies and Romance? It's all about joy, trust, and a hint of anticipation. 
+                Each genre owns its unique emotional signature – cinema's secret language! 
+                Let's keep on riding this emotional roller coaster! """, bottom_margin="60px")
     
 
 def emotion_heatmap():
-    format_text("""This heatmap gives us a better overal idea of how emotions are distributed in these genres. 
-                Trust seems to be evoked in many genres except in Horror (I guess there's no trusting a guy chasing you with a chainsaw), 
-                while fear is prevalent not only in obviously spooky/tense movie genres but also in action and science fiction! 
-                This gives us a very interesting and general insight on how the edge/future of technology is portrayed in cinema. 
-                Maybe we have a tendency to be pessimistic about the future?""")
-    
+    format_text("""Let's now look at the emotion heatmap – our aggregate of cinematic vibes! 
+                Trust is the star of the show, making appearances in various genres 
+                (except Horror, where trusting a chainsaw-wielding person chasing you might not end well). 
+                Fear, on the other hand, isn't just confined to spooky flicks – it's chilling with 
+                the action and science fiction squads too! This paints an intriguing picture of 
+                how cinema sees the cutting edge and future tech. Are we a tad pessimistic about what lies ahead?""")
+
+def emotion_clusters_intro():
+    format_text("""With all the clues pointing to genres having their own emotional fingerprints, 
+                we couldn't resist asking: Can we spot a movie genre just by feeling the vibes in its summary? 
+                Time to put our detective hats on and dive into the world of emotion clustering – 
+                let the genre-guessing games begin!""")
+
 def emotion_clusters():
-    format_text("""As we observe it's not as simple as we thought, the latent emotion space of our movies 
-                overlap quite a bit and don't really ressemble the clusters obtained by K-means. 
-                Notheless, we can still notice that Romantic Comedy and Romance separate pretty well from 
-                Action/Adventure, Thriller, Horror. If we want to actually discriminate movie genres based 
-                on emotions we'd need a more sophisticated approach. 
-                We'll come back to this later...""")
+    format_text("""Well... turns out our movie emotions are a bit of a mystery! 
+                The emotional universe of our films doesn't neatly align with the clusters we envisioned. 
+                Nevertheless, amidst the overlapping emotions, a glimmer of distinction emerges. 
+                Romantic Comedy and Romance movies seem to cluster away from the pack of Action/Adventure, 
+                Thriller, and Horror. But if we're serious about playing matchmaker with genres and emotions, 
+                it seems a more sophisticated strategy is in order. Stay tuned, because we're just warming 
+                up – there's more cinematic magic to unravel later on!""")
     
 
+def emotion_generations_intro():
+    format_text("""Time for an emotion check through time! 
+                Do the emotions of cinema evolve with each generation, 
+                or is the emotional script a timeless tale? 
+                Let's check how different emotions unfold across the ages!""", bottom_margin="60px")
 def emotion_generations():
-    st.markdown("""As we can see it doesn't seem to change at all! 
-                The average emotional content of the summaries is basically the same to all generations.""")
+    format_text("""It appears the cinematic emotions are doing the time warp! Across generations, 
+                the average emotional content in movie summaries seem to be caught in a time loop, ever unchanging!""")
     
+def movies_released_per_generation():
+    format_text("""The CMU Movie Summary Corpus Dataset consists of 42,207 movie plot summaries 
+                and their corresponding metadata. For the purpose of the analysis, and considering the large number
+                of movies it contains, we suppose this dataset depicts an accurate representation of the proportion
+                of movie released per generation. """)
+    format_text("""Let's take a quick trip throughout time, looking at how many movies have been produced by generation. """, bottom_margin = "60px")
+    
+
+
+def movies_released_analysis():
+    format_text("""First up, the Lost Generation, born around the time when movies were just starting, 
+                which explains the lack of numerous movies at that time. 
+                Throughout the generations, the number of movies continued to grow. Notably, 
+                the Baby Boomers really saw things take off, with 4,750 movies released at that time. 
+                This was when color TV and rock&roll were big, so movies had to keep up with the exciting times!""")
+
+    format_text("""The Millennials take things up a notch with a big jump to 7,636 movies. 
+                Thanks to the internet, making and especially watching movies got a lot easier. 
+                This explains the rapid growth between this generation and the previous one. Generation Z has seen 
+                the most so far, with a whopping 14,298 movies. 
+                With smartphones, tablets, and streaming (illegal or not 😉), watching movies at any time, 
+                any place, with or without internet connection, became the norm.""")
+
+    format_text("""With Generation Alpha, we see fewer movies being made, 3,272. 
+                This is simply explained by the fact that the dataset ranges until 2014, just 4 years after the 
+                start of this generation, thus not being an accurate representation of the trends in the cinema 
+                world for this generation. However, in the 4-year span where data is available, we can see that 
+                this generation achieved a number of movies almost as large as the Silent generation. 
+                Technology has made a lot of progress since then, and movie making became more and more popular, 
+                and easier! """, bottom_margin="30px")
+
+
 
 def pie_introduction():
-    format_text("""The CMU Movie Summary Corpus Dataset consists of 42,207 movie plot summaries 
-                and their corresponding metadata.  As the number of genres in this dataset are diverse, 
+    format_text(""" As the number of genres in CMU Movie Summary Corpus dataset is large, 
                 with 364 genres in total, we decided to focus on the top 10 genres in the whole dataset, and analyses 
                 how these genres vary across generations.""")
     
@@ -90,7 +158,7 @@ def pie_analysis():
                 We are coming back to this question a little bit later in our story.""") 
     format_text("""Short films and crime fiction, each at 11.9%, remind us that brevity can be the soul of wit and intrigue: 
                 they capture the essence of succinct storytelling in the form of short narrative. 
-                But was this always the case? So, how do these preferences play out across different generations?""")
+                But was this always the case? So, how do these preferences play out across different generations?""", bottom_margin = "60px")
     
 
 def heatmap_analysis():
@@ -107,7 +175,7 @@ def heatmap_analysis():
                 seemingly interested in suspense, action and emotional arcs 💃🕺.""")
     format_text("""With this generational perspective in mind, we now turn to a stacked bar chart to understand 
                 how these genre preferences stack up proportionally over time, and to see whether a cultural shift in 
-                the ‘moods’ and attitudes of society characterised by genres in noticeable. """)
+                the ‘moods’ and attitudes of society characterised by genres in noticeable. """, bottom_margin = "60px")
 
 
 def stacked_genres_analysis():
@@ -121,3 +189,81 @@ def stacked_genres_analysis():
     format_text("""As we move from left to right, from oldest to newest generation, there’s a visible diversification 
                 in genres consumed. The Silent Generation's bar shows an increase in dramas and thrillers, 
                 a pattern that's consistently amplified in almost all following generations.""")
+    
+def parallel_genres_intro():
+    format_text("""However, this representation might not be the most accurate, as it does not take into account the 
+                top genres for each generation. Let's that a closer look at this!""", bottom_margin = "30px")
+    
+def parallel_genres_analysis():
+    format_text("""This parallel graph allows us to observe the shifts in cultural cinematic preferences 
+                through genres. Witness the robust presence of drama, present across almost all generations, 
+                suggesting a universal resonance with the poignant effect of this genre to the watcher. 
+                Drama might constitute an escape from reality to the watcher like no other genre.""")
+    
+    format_text("""Generation-specific genres emerge and retreat. 
+                As we can see, 21 genres are popular over the years, contradicting the initial top 10 genres
+                 we found across all generations. This informs us of a change in preferences over generations, 
+                but also the emergence of new genres. As an example, before Gen Z, ‘LGBT’ genre did not exist. 
+                The fact that this genre not only exists but became popular amongst that generation shows 
+                the true meaning of inclusivity in the cinematic world. ‘Family films’ also appear in the last 
+                2 generations, Millennials and Gen Z, which reinforces the idea that newer generations value 
+                family experiences a lot more than previous ones, more focused on work and making a living during dark times. 
+                This also depicts the world as is: times of war call for work and action - and less family time - and latter times, 
+                thus calmer times in a worldwide setting,
+                allow people to focus on other aspects of their lives, such as family.""")
+    format_text("""To the opposite spectrum, some genres disappeared. 
+                The top right of the graph shows that silent film were popular once, with  the Lost, 
+                Greatest and Silent generations, but quickly faded after the expansion of technology and the development 
+                of movie equipments.""")
+    format_text("""We wonder though if these feelings and emotions we are talking about are translated and visible in certain genres...""")
+    
+
+def generations_explained():
+    format_text("""
+    From the 20th to the 21st centuries, distinct generations have emerged, 
+                each shaped by unique historical and cultural events. 
+                The story of these generations is a voyage through war and peace, prosperity and hardship, 
+                revolution and the rise of the digital age 💻.""")
+
+    format_text(""" <strong>The Lost Generation (born between 1883 and 1900)</strong> emerged right before World War I and the 
+                roaring twenties, and lived through these historical periods. 
+                They were marked by a profound sense of disillusionment from the war's devastation, 
+                and this was reflected in the era's shift toward modernist art and literature.""")
+
+    format_text(""" <strong> The Greatest Generation (1901–1927)</strong> was forged under the harsh conditions of the Great Depression,
+                 instilling in them the values of frugality and a strong work ethic. 
+                Their resilience was further tested during World War II, which cultivated a deep sense of duty, 
+                sacrifice, commitment to community and a respect for authority.""")
+
+    format_text("""<strong> The Silent Generation (1928–1945)</strong> grew up amongst economic hardship and conflict but matured into the 
+                stability of the post-war boom. This era shaped them into conformists with a strong civic sense, 
+                valuing stability and discretion about personal struggles.""")
+
+    format_text("""<strong> The Baby Boomers (1946–1964)</strong> burst onto the scene during the transformative years of the civil 
+                rights movement, the Vietnam War, and the sexual revolution. 
+                They were characterised by their willingness to challenge social norms and authority, 
+                unlike previous generations, valuing individualism, equal rights and personal freedom.""")
+
+    format_text(""" <strong> Generation X (1965–1980)</strong> came of age in a period tinged with economic uncertainty and changing 
+                family dynamics. Independence, resilience, and a desire for a healthy work-life balance define
+                 this generation, which is often viewed as skeptical yet value-driven.""")
+                
+    format_text(""" <strong> The Millennials (1981–1996)</strong> entered adulthood with the internet revolution at their fingertips, 
+                shaping their values around connectivity, innovation, and a global perspective. 
+                They are known for prioritising diversity, equality, sustainability, and valuing experiences over material
+                 possessions. This generation connects with Generation X in a certain sense.""")
+                
+    format_text("""<strong> Generation Z (1997–2009)</strong> represents the true digital natives (us!), for whom inclusivity, 
+                individuality, and authenticity are core values. Raised during a global recession, 
+                they are seen as pragmatic and financially astute, with strong commitments to social justice 
+                and environmental issues.""")
+
+    format_text("""<strong> Generation Alpha (2010–2024)</strong>, the youngest and emerging generation, is still being shaped 
+    \(our brothers and sisters - if any!). They are the real children of the digital age, surrounded by advanced technology and AI.
+                 Early indications suggest they will prioritise digital literacy, mental health, 
+                and the pressing environmental concerns of their time.""")
+
+    format_text("""Each of these generations has left and will leave an indelible mark on the world, 
+                not just through the values they uphold and the culture they create but also through the art 
+                they consume and produce, including the movies that define their times.
+    """)

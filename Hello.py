@@ -32,14 +32,20 @@ def set_css():
         """
         st.markdown(css, unsafe_allow_html=True)
 
+def load_animation(url: str):
+        r = requests.get(url)
+        if r.status_code != 200:
+            return None
+        return r.json()
+
 ## --- IMAGES AND ANIMATIONS --- #
-# movie_animation = load_animation("https://lottie.host/30a4816a-5b22-400d-92ab-30115ded0ab5/oh3wyo4dat.json")
+movie_animation = load_animation("https://lottie.host/30a4816a-5b22-400d-92ab-30115ded0ab5/oh3wyo4dat.json")
 # example_img = Image.open("images/example_img.JPG")
-#st_lottie(movie_animation, speed=1, height=400, key="coding")
 #st.image(example_img, caption="This is an example image", use_column_width=True)
 
 
 # --- DATA --- #
+
 def get_data(filename, index_col = False):
     if index_col:
         df = pd.read_csv('data/' + filename, index_col=0)
@@ -51,7 +57,6 @@ def get_data(filename, index_col = False):
 def get_csv(filename):
     df = pd.read_csv('data/' + filename)  
     return df
-
 
 movies_summary = get_data('movies_summary.csv')
 emotions = get_data('MovieIDs_emotions.csv', index_col=True)
@@ -78,14 +83,6 @@ df_generations = pd.DataFrame(generations_dict)
 def run():
     st.set_page_config(page_title="Feel the genres", page_icon=":sparkles:", layout="wide", initial_sidebar_state="collapsed")
 
-    def load_animation(url: str):
-        r = requests.get(url)
-        if r.status_code != 200:
-            return None
-        return r.json()
-
-    # --- STYLE --- #
-
     # if needed
     def upload_css(file_name):
         with open(file_name) as f:
@@ -95,9 +92,15 @@ def run():
 
     # --- HEADER --- #
     with st.container():
-        st.title(":sparkles: Feel the genres :sparkles:, by Badafixm01")
-        st.subheader("A data analysis story about movie genres and emotions")
-        texts.introduction()
+        st.title(":sparkles: Let's find a new title lol :sparkles:")
+        st.subheader("Introduction")
+        col1, col2 = st.columns(2)
+        with col1:
+            texts.introduction()
+        with col2:
+            st_lottie(movie_animation, speed=1, height=400, key="coding")
+
+        
 
     # --- SIDEBAR --- #
     with st.container():
@@ -116,69 +119,56 @@ def run():
             
     #### PART 1 ####
     with st.container():
-        st.title("Part 1 : XX")
+        st.title("A backstory about generations and genres")
 
-        st.subheader("XXX")
+        texts.generations_explained()
+
+        texts.movies_released_per_generation()
         gen.movie_count_per_generation(movies_summary, generations)
+        texts.movies_released_analysis()
 
-        st.subheader("XXX")
+        st.subheader("A closer look at movie preferences throughout time thanks to genres")
         texts.pie_introduction()
         gen.genres_proportion(movies_summary, generations)
         texts.pie_analysis()
 
-        st.subheader("XXX")
         gen.genres_heatmap(filtered_movies, top_genres, generations)
         texts.heatmap_analysis()
 
-        st.subheader("XXX")
         gen.genres_proportion_per_generation(movies_summary, top_genres, generations)
         texts.stacked_genres_analysis()
 
-        st.subheader("XXX")
+        texts.parallel_genres_intro()
         gen.genre_proportion_for_generation(filtered_movies, generations)
+        texts.parallel_genres_analysis()
             
     #### PART 2 ####       
     with st.container():
-        st.title("Part 2 : XX")
-        col1, col2 = st.columns(2)
-        with col1:
-            st.header("Column 1")
-            st.write(""" 
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.""")
-        with col2:
-            st.header("Column 2")
-            
-        st.subheader("XXX")
-        st.markdown("""We'll now check how each of the eight basic emotions evolved for each of the main genres over the years. 
-                    Are the emotions randomly distributed per genre? Do they represent trends that shift over time?""")
+        st.title("When emotions come into play")
+        texts.emotion_dataset()   
+
+        st.subheader("Emotions over the years")
+        texts.emotion_lines_intro()
         emo.emotions_along_time(movies_emotions, emotions)
         texts.emotion_lines()
 
-        st.subheader("XXX")
         emo.heatmap_emotions_genre(movies_emotions, top_genres)
         texts.emotion_heatmap()
 
-        st.subheader("XXX")
-        st.markdown("""Given that we had many hints that certain genres have certain signatures with respect to emotions we had to ask: 
-                    Can we easily identify a movie genre by simply clustering it by the emotions its summary evokes? Let's try!""")
+        texts.emotion_clusters_intro()
         emo.emotion_clusters(movies_emotions, top_genres, 'TSNE', emotions_tsne)
-
-        st.subheader("XXX")
         emo.emotion_clusters(movies_emotions, top_genres, 'PCA', emotions_pca)
         texts.emotion_clusters()
 
-        st.subheader("Emotional Intensities in Film Genres")
-        st.markdown("""
-            To what degree can emotional intensities and the positive/negative sentiment help shape the genre? 
-            We seek the answer in regression analysis.
-            """)
+        st.subheader("Emotions shaping genres")
+        texts.regression_intro()
         emo.regression_heatmap(regression)
         texts.regression()
+        texts.regression_findings()
 
 
-        st.subheader("XXX")
-        st.markdown("""We'll now give a look at how different emotions are overall distributed in the different generations. 
-                    Does the cinema lexicon change from generation to generation or the emotional content stays the same throughout time?""")
+        st.subheader("What about emotions across generations?")
+        texts.emotion_generations_intro()
         emo.generation_emotions(movies_emotions)
         texts.emotion_generations()
         

@@ -37,7 +37,6 @@ def genres_proportion(movies_summary, generations):
 
     # create pie chart architecture
     fig = px.pie(genre_df, names='Main Genre', values='Percentage',
-                 title='Top 10 Movie Main Genres Distribution', ## REMOVE TITLE AFTERWARDS
                  hover_data=['Main Genre'], labels={'Main Genre':'Genre'}, color_discrete_sequence = default_colors)
     
     # display percentages on chart and pull slices out
@@ -101,8 +100,7 @@ def genres_heatmap(movies_summary, top_genres, generations):
         tooltip=['Generation', 'Main Genre', 'Count']
     ).properties(
         width=alt.Step(40), 
-        height=600,
-        title="Heatmap of top genres per generation"
+        height=600
     )
 
     text = heatmap.mark_text(baseline='middle').encode(
@@ -150,6 +148,9 @@ def genre_porportion_for_generation(movies_summary, generations):
 
 
 def genre_proportion_for_generation(movies_summary_gen, generations):
+
+    # remove generation alpha as not relevant in the analysis
+    movies_summary_gen = movies_summary_gen[movies_summary_gen['Generation'] != 'Generation Alpha']
     # compute top 10 genres for each generation separately
     top_genres_per_generation = (
         movies_summary_gen.groupby(['Generation', 'Main Genre'])
@@ -162,9 +163,10 @@ def genre_proportion_for_generation(movies_summary_gen, generations):
 
     # ensure generations are in chronological order
     top_genres_per_generation['Generation'] = pd.Categorical(top_genres_per_generation['Generation'], categories=generations, ordered=True)
+    top_genres_per_generation.sort_values(by='Generation', inplace=True)
 
     # parallel  diagram
-    # manually computed percentiles
+    # manually pre-computed percentiles
     color_scale = [[0, '#636EFA'],[0.009, '#19D3F3'],[0.051, '#00CC96'],[0.065, '#B6E880'],[0.080, '#FFA15A'],[0.092, '#FECB52'],
                    [0.109, '#FF6692'],[0.175, '#FF97FF'],[0.225, '#EF553B'],[1, '#AB63FA']]
     genre_order = (top_genres_per_generation.groupby('Main Genre')['Count'].sum().sort_values(ascending=False).index.tolist())
@@ -175,7 +177,7 @@ def genre_proportion_for_generation(movies_summary_gen, generations):
     
     # Adjust figure size
     fig.update_layout(margin=dict(l=100),  # avoid text cutting
-                      width=900, height=1100)
+                      width=900, height=900)
 
     st.plotly_chart(fig, use_container_width=True)
 
