@@ -8,9 +8,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import generations as gen
 import emotions as emo
+import historical_events as hist
 import texts
-
-import streamlit as st
 
 # --- CONFIG --- #
 
@@ -46,6 +45,15 @@ regression = get_csv('regression_params.csv')
 filtered_movies = movies_summary.loc[movies_summary['Generation'] != 'Unknown Generation']
 movies_emotions = emotions.merge(filtered_movies, on='Wikipedia Movie ID', how='left')
 top_genres = movies_summary['Main Genre'].value_counts().head(10).index.tolist()
+
+generations_dict = {
+    "Generation": ["Lost Generation", "Greatest Generation", "Silent Generation", "Baby Boomers", 
+                   "Generation X", "Millennials", "Generation Z", "Generation Alpha"],
+    "Start Year": [1883, 1901, 1928, 1946, 1965, 1981, 1997, 2010],
+    "End Year": [1900, 1927, 1945, 1964, 1980, 1996, 2009, 2023]
+}
+generations = generations_dict['Generation']
+df_generations = pd.DataFrame(generations_dict)
 
 # --- PAGES --- #
 
@@ -109,20 +117,23 @@ def run():
         st.title("Part 1 : XX")
 
         st.subheader("XXX")
+        gen.movie_count_per_generation(movies_summary, generations)
+
+        st.subheader("XXX")
         texts.pie_introduction()
-        gen.genres_proportion(movies_summary)
+        gen.genres_proportion(movies_summary, generations)
         texts.pie_analysis()
 
         st.subheader("XXX")
-        gen.genres_heatmap(filtered_movies, top_genres)
+        gen.genres_heatmap(filtered_movies, top_genres, generations)
         texts.heatmap_analysis()
 
         st.subheader("XXX")
-        gen.genres_proportion_per_generation(movies_summary, top_genres)
+        gen.genres_proportion_per_generation(movies_summary, top_genres, generations)
         texts.stacked_genres_analysis()
 
         st.subheader("XXX")
-        gen.genre_proportion_for_generation(filtered_movies)
+        gen.genre_proportion_for_generation(filtered_movies, generations)
             
     #### PART 2 ####       
     with st.container():
@@ -169,15 +180,12 @@ def run():
         emo.generation_emotions(movies_emotions)
         texts.emotion_generations()
         
-    # --- FOOTER --- #
+    #### PART 3 ####   
     with st.container():
         st.title("Part 3 : put Berta after these plots")
         st.subheader("XXX")
         
-        gen.plot_generations_movie_releases(movies_summary)
-
-        st.subheader("XXX")
-        gen.movie_count_per_generation(movies_summary)
+        hist.plot_generations_movie_releases(movies_summary, generations)
 
         st.subheader("XXX")
         st.subheader("XXX")

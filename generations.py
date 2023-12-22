@@ -9,74 +9,13 @@ import colorsys
 
 default_colors = px.colors.qualitative.Plotly
 
-generations_dict = {
-    "Generation": ["Lost Generation", "Greatest Generation", "Silent Generation", "Baby Boomers", 
-                   "Generation X", "Millennials", "Generation Z", "Generation Alpha"],
-    "Start Year": [1883, 1901, 1928, 1946, 1965, 1981, 1997, 2010],
-    "End Year": [1900, 1927, 1945, 1964, 1980, 1996, 2009, 2023]
-}
-generations = generations_dict['Generation']
-df_generations = pd.DataFrame(generations_dict)
-
-## Movie releases by year (filtered with generations)
-def plot_generations_movie_releases(movies_summary):
-    selected_generations = st.multiselect("Select Generations", generations, default=generations)
-
-    if not selected_generations:
-        st.error("Please select at least one generation.")
-    else:
-        # filtering data based on the selected generations
-        filtered_movies = movies_summary[movies_summary['Generation'].isin(selected_generations)]
-        yearly_data = filtered_movies.groupby(['Movie Release Year', 'Generation']).size().reset_index(name='Number of Movies')
-        
-        # base chart for the lines
-        line_chart = alt.Chart(yearly_data).mark_line().encode(
-                x='Movie Release Year:O',
-                y='Number of Movies:Q',
-                color='Generation:N',
-                tooltip=['Movie Release Year', 'Number of Movies', 'Generation']
-            )
-
-        # define periods
-        periods = [
-            {"start": 1914, "end": 1918, "event": "WW1", "color": "lightgrey"},
-            {"start": 1939, "end": 1945, "event": "WW2", "color": "lightgrey"},
-            {"start": 1929, "end": 1939, "event": "Great Depression", "color": "lightblue"},
-            {"start": 2007, "end": 2009, "event": "Global Financial Crisis", "color": "lightgreen"}
-        ]
-
-        # shaded areas & corresponding labels for period
-        layers = [line_chart]
-        for p in periods:
-            area = alt.Chart(alt.Data(values=[{'start': p['start'], 'end': p['end']}])).mark_rect(
-                opacity=0.5, color=p['color']).encode(
-                x='start:O',
-                x2='end:O'
-            )
-
-            text = alt.Chart(alt.Data(values=[{'start': p['start'], 'event': p['event']}])).mark_text(
-                align='left', baseline='top', dx=5, dy=-5, color=p['color']).encode(
-                x='start:O',
-                text='event:N'
-            )
-
-            layers.append(area)
-            layers.append(text)
-
-        # Combine all layers into a single chart
-        chart = alt.layer(*layers).resolve_scale(x='shared').interactive()
-        st.altair_chart(chart, use_container_width=True)
-
-
-
-
 ## Number of movies per generation
-def movie_count_per_generation(movies_summary):
+def movie_count_per_generation(movies_summary, generations):
     movies_per_generation = movies_summary['Generation'].value_counts().reindex(generations).fillna(0).reset_index()
     movies_per_generation.columns = ['Generation', 'Number of Movies']
 
     # bar chart
-    chart = alt.Chart(movies_per_generation).mark_bar(color='skyblue').encode(
+    chart = alt.Chart(movies_per_generation).mark_bar(color='#1bd3f3').encode(
         x=alt.X('Generation', sort=None, axis=alt.Axis(labelAngle=-60)),  
         y='Number of Movies',
         tooltip=['Generation', 'Number of Movies']
@@ -88,9 +27,8 @@ def movie_count_per_generation(movies_summary):
     # display chart
     st.altair_chart(chart, use_container_width=True)
 
-
 ## Proportion of genres per generation 
-def genres_proportion(movies_summary):
+def genres_proportion(movies_summary, generations):
     genre_counts = movies_summary['Main Genre'].value_counts().nlargest(10)
     genre_df = pd.DataFrame({'Main Genre': genre_counts.index, 'Count': genre_counts.values})
 
@@ -110,7 +48,7 @@ def genres_proportion(movies_summary):
 
 
 # Proportion of top 10 genres of whole dataset for each generation
-def genres_proportion_per_generation(movies_summary, top_genres):
+def genres_proportion_per_generation(movies_summary, top_genres, generations):
     # include only the top genres
     movies_top_genres = movies_summary[movies_summary['Main Genre'].isin(top_genres)]
     movies_top_genres['Generation'] = pd.Categorical(movies_top_genres['Generation'], categories=generations, ordered=True)
@@ -145,7 +83,7 @@ def genres_proportion_per_generation(movies_summary, top_genres):
     st.altair_chart(chart, use_container_width=True)
 
 # Proportion of top 10 genres of whole dataset for each generation - heatmap version
-def genres_heatmap(movies_summary, top_genres):
+def genres_heatmap(movies_summary, top_genres, generations):
     # Filter for top genres and calculate counts
     top_genre_data = movies_summary[movies_summary['Main Genre'].isin(top_genres)]
 
@@ -177,7 +115,7 @@ def genres_heatmap(movies_summary, top_genres):
 
     st.altair_chart(heatmap + text, use_container_width=True) 
 
-def genre_porportion_for_generation(movies_summary):
+def genre_porportion_for_generation(movies_summary, generations):
     # count of movies per genre for each generation
     genre_counts_per_generation = (
         movies_summary.groupby(['Generation', 'Main Genre'])
@@ -211,7 +149,7 @@ def genre_porportion_for_generation(movies_summary):
     st.altair_chart(combined_chart, use_container_width=True)
 
 
-def genre_proportion_for_generation(movies_summary_gen):
+def genre_proportion_for_generation(movies_summary_gen, generations):
     # compute top 10 genres for each generation separately
     top_genres_per_generation = (
         movies_summary_gen.groupby(['Generation', 'Main Genre'])
