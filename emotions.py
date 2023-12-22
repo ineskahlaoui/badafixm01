@@ -11,6 +11,7 @@ from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
 
 genres = ['Thriller', 'Romantic comedy', 'Horror', 'Short Film']
+
 emotions_cols = ['anger', 'anticipation', 'disgust', 'fear', 'joy', 'sadness', 'surprise', 'trust']
 generations = ["Lost Generation", "Greatest Generation", "Silent Generation", "Baby Boomers", 
                    "Generation X", "Millennials", "Generation Z", "Generation Alpha"]
@@ -19,6 +20,9 @@ default_colors = px.colors.qualitative.Plotly
 plotly_red = '#ef553b'
 plotly_white = 'white'
 plotly_blue = '#636efa'
+plotly_pink = '#ff6692'
+plotly_green = '#00cc96'
+genres_color = [plotly_red, plotly_pink, 'black', plotly_green]
 
 ## emotions along the plots (4 genres)
 def emotions_along_time(movies_emotions, df_emotions):
@@ -222,7 +226,7 @@ def regression_heatmap(df_params):
 def sentiment_score_distribution(movies_summary):
     try:
         # histogram of sentiment scores
-        chart = alt.Chart(movies_summary).mark_bar(opacity=0.9, color='#1bd3f3').encode(
+        chart = alt.Chart(movies_summary).mark_bar(opacity=0.9, color=plotly_blue).encode(
             alt.X('Sentiment score plot', bin=alt.Bin(maxbins=20), title='Sentiment score'),
             alt.Y('count()', title='Frequency')
         ).properties(width=600,height=400).interactive()
@@ -250,7 +254,7 @@ def average_sentiment_score(movies_summary):
         sorted_avg_sentiment = avg_sentiment.reindex(generations).fillna(0)
         
         # chart architecture
-        trace = go.Bar(x=sorted_avg_sentiment.index, y=sorted_avg_sentiment.values, name=genre, marker_color='#1bd3f3')
+        trace = go.Bar(x=sorted_avg_sentiment.index, y=sorted_avg_sentiment.values, name=genre, marker_color=genres_color[i])
         fig.add_trace(trace, row=row, col=col)
         fig.update_xaxes(title_text='Generation', row=row, col=col)
         fig.update_yaxes(title_text='Average sentiment score', row=row, col=col)
