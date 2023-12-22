@@ -86,7 +86,8 @@ def format_emotions_data(movies_emotions, top_genres):
 
     return heatmap_data
 
-def heatmap_emotions_genre(movies_emotions, top_genres):
+def heatmap_emotions_genre(movies_emo, top_genres):
+    movies_emotions = movies_emo.copy()
     heatmap_data = format_emotions_data(movies_emotions, top_genres)
 
     # group by main genre & compute mean
@@ -223,7 +224,8 @@ def regression_heatmap(df_params):
 
 
 # overall sentiment score distribution    
-def sentiment_score_distribution(movies_summary):
+def sentiment_score_distribution(movies_sum):
+    movies_summary = movies_sum.copy()
     try:
         # histogram of sentiment scores
         chart = alt.Chart(movies_summary).mark_bar(opacity=0.9, color=plotly_blue).encode(
@@ -242,7 +244,8 @@ def sentiment_score_distribution(movies_summary):
 
 
 ## average sentiment score per generation for certain genres
-def average_sentiment_score(movies_summary):
+def average_sentiment_score(movies_sum):
+    movies_summary = movies_sum.copy()
     fig = make_subplots(rows=2, cols=2, subplot_titles=[f'Average Sentiment Score for {genre}' for genre in genres])
 
     for i, genre in enumerate(genres):

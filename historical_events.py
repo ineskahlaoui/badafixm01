@@ -19,7 +19,8 @@ periods = [
 
 
 ## Movie releases by year (filtered with generations)
-def plot_generations_movie_releases(movies_summary, generations):
+def plot_generations_movie_releases(movies_sum, generations):
+    movies_summary = movies_sum.copy()
     movies_summary = movies_summary[movies_summary['Movie Release Year'] < 2013]
     selected_generations = st.multiselect("Select Generations", generations, default=generations)
 
@@ -62,7 +63,8 @@ def plot_generations_movie_releases(movies_summary, generations):
 
 
 ## movie distribution per top 5 countries
-def generations_movie_releases_countries(movies_summary, generations):
+def generations_movie_releases_countries(movies_sum, generations):
+    movies_summary = movies_sum.copy()
     movies_summary = movies_summary[movies_summary['Movie Release Year'] < 2013]
     movies_summary['Movie Countries'] = movies_summary['Movie Countries'].apply(ast.literal_eval)
     

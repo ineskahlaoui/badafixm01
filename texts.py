@@ -269,7 +269,12 @@ def generations_explained():
     """)
 
 def sentiment_score_distribution():
-    format_text("""TO BE ADDED""")
+    format_text("""We wanted to take a deeper journey into the evolution of movies throughout time using the TextBlob tool. 
+                We compute the sentiment score of each plot summary corresponding to every movie to reflect the story's heart and averaged it, 
+                pulsating between the extremes of -1 and 1, where every nuance of emotion from the darkest despair to the brightest joy is captured. 
+This histogram reveals that most movie plot summaries tend to be a bit on the positive side, with a peak around a sentiment score of 0.15. 
+                This means that when all the stories are averaged out, they're generally more uplifting than downbeat. 
+                It’s rare to find a movie plot summary that's extremely negative, as the left side of the chart, which represents the sadder scores, is quite empty.""")
 
 
 def sentiment_intro():
