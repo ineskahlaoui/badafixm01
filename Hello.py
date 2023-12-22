@@ -91,7 +91,7 @@ def run():
 
     # --- HEADER --- #
     with st.container():
-        st.title(":sparkles: Let's find a new title lol :sparkles:")
+        st.title(":sparkles: Cinematic Emotions Across Generations, Genres, and more! :sparkles:")
         st.subheader("Introduction")
         col1, col2 = st.columns(2)
         with col1:
@@ -190,8 +190,8 @@ def run():
         texts.world_map_analysis()
         
         hist.generations_movie_releases_countries(movies_summary, generations)
+        texts.world_lines_analysis()
 
-        
         hist.wordcloud(word_clouds)
         texts.world_cloud_analysis()
         

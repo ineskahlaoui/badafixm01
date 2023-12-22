@@ -21,7 +21,7 @@ def movie_count_per_generation(movies_summary, generations):
         tooltip=['Generation', 'Number of Movies']
     ).properties(
         width=700,
-        height=400
+        height=400, title = 'Number of movie released per generation'
     )
 
     # display chart
@@ -41,6 +41,7 @@ def genres_proportion(movies_summary, generations):
     
     # display percentages on chart and pull slices out
     fig.update_traces(textinfo='percent+label', pull=[0.1] * genre_df.shape[0])
+    fig.update_layout(title='Top 10 movie main genres proportion')
 
     # display chart
     st.plotly_chart(fig, use_container_width=True)
@@ -77,7 +78,7 @@ def genres_proportion_per_generation(movies_summary, top_genres, generations):
         y=alt.Y('Proportion:Q', stack='normalize'),
         color=alt.Color('Genre:N', scale=alt.Scale(domain=domain, range=range_)),
         tooltip=['index', 'Genre', alt.Tooltip('Proportion:Q', format='.1%')]
-    ).properties(width=700,height=500)
+    ).properties(width=700,height=500, title = 'Number of movies by top 10 main genres in the dataset across generations')
 
     st.altair_chart(chart, use_container_width=True)
 
@@ -100,7 +101,7 @@ def genres_heatmap(movies_summary, top_genres, generations):
         tooltip=['Generation', 'Main Genre', 'Count']
     ).properties(
         width=alt.Step(40), 
-        height=600
+        height=600, title = 'Number of movies by top 10 main genres in the dataset across generations'
     )
 
     text = heatmap.mark_text(baseline='middle').encode(
@@ -177,7 +178,7 @@ def genre_proportion_for_generation(movies_summary_gen, generations):
     
     # Adjust figure size
     fig.update_layout(margin=dict(l=100),  # avoid text cutting
-                      width=900, height=900)
+                      width=900, height=900, title = 'Number of movies by top 10 main genres for each generation across generations')
 
     st.plotly_chart(fig, use_container_width=True)
 

@@ -67,7 +67,7 @@ def emotions_along_time(movies_emotions, df_emotions):
 
     # Unified legend
     fig.update_layout(height=800,width=1000,
-        title_text="Emotion intensity scores by genre over time",
+        title_text="Emotion intensity scores for 4 genres across time",
         legend_title="Emotions",
         legend=dict(traceorder='normal',font=dict(size=10),itemsizing='constant'),
         showlegend=True)
@@ -102,7 +102,7 @@ def heatmap_emotions_genre(movies_emo, top_genres):
         x=alt.X('Emotion:N', title='Emotion'), y=alt.Y('Main Genre:N', title='Main Genre', sort=top_genres),
         color=alt.Color('Score:Q', scale= alt.Scale(domain=domain, range=color_range), title='Score'),
         tooltip=['Main Genre', 'Emotion', 'Score']
-    ).properties(width=alt.Step(40), height=600)
+    ).properties(width=alt.Step(40), title = 'Emotion scores by top 10 main genres in the dataset', height=600)
     
     text = heatmap.mark_text(baseline='middle').encode(
         text=alt.Text('Score:Q', format='.2f'),
@@ -181,7 +181,7 @@ def generation_emotions(movies_emotions):
         y=alt.Y('sum(Proportion):Q', title='Proportion of emotions'),
         color=alt.Color('Emotion:N', scale=alt.Scale(domain=domain, range=range_)),
         order=alt.Order('Emotion:N', sort='ascending') 
-    ).properties(width=600,height=600)
+    ).properties(width=600,height=600, title = 'Distribution of emotions across generations')
 
     st.altair_chart(chart, use_container_width=True)
 
@@ -208,7 +208,7 @@ def regression_heatmap(df_params):
             alt.Tooltip('Genre:N', title='Genre'),
             alt.Tooltip('Value:Q', title='Value', format='.3f')
         ]
-    ).properties(height=500)
+    ).properties(height=500, title = 'Correlation heatmap of emotion predictors across movie genres')
 
     # Create text labels for the heatmap
     text = heatmap.mark_text(baseline='middle').encode(
@@ -231,7 +231,7 @@ def sentiment_score_distribution(movies_sum):
         chart = alt.Chart(movies_summary).mark_bar(opacity=0.9, color=plotly_blue).encode(
             alt.X('Sentiment score plot', bin=alt.Bin(maxbins=20), title='Sentiment score'),
             alt.Y('count()', title='Frequency')
-        ).properties(width=600,height=400).interactive()
+        ).properties(width=600,height=400, title = 'Distribution of sentiment scores').interactive()
 
         # display chart 
         st.altair_chart(chart, use_container_width=True)
@@ -262,5 +262,5 @@ def average_sentiment_score(movies_sum):
         fig.update_xaxes(title_text='Generation', row=row, col=col)
         fig.update_yaxes(title_text='Average sentiment score', row=row, col=col)
 
-    fig.update_layout(height=800, width=800, showlegend=False)
+    fig.update_layout(height=800, width=800, title = 'Average sentiment score for 4 genres across generations', showlegend=False)
     st.plotly_chart(fig, use_container_width=True)

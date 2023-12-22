@@ -348,6 +348,9 @@ def world_map_analysis():
                 highlighting regional leaders. To understand the dynamics behind these numbers, 
                 let's delve into the line graph below, which traces the historical rise and fall of 
                 movie production providing context to the flow of cinema across the top producing countries.""")
+    
+
+def world_lines_analysis():
     format_text("""The United States demonstrates a dramatic surge in movie 
                 production starting around the early 20th century, with a particularly 
                 pronounced increase from 1925-1935 and from the 1980s up to the early 2000s. India shows 

@@ -58,7 +58,7 @@ def plot_generations_movie_releases(movies_sum, generations):
             layers.append(text)
 
         # Combine all layers into a single chart
-        chart = alt.layer(*layers).resolve_scale(x='shared').interactive()
+        chart = alt.layer(*layers).resolve_scale(x='shared').properties(title='Trends in movie releases over time').interactive()
         st.altair_chart(chart, use_container_width=True)
 
 
@@ -110,7 +110,7 @@ def generations_movie_releases_countries(movies_sum, generations):
             layers.append(text)
 
         # Combine all layers into a single chart
-        chart = alt.layer(*layers).resolve_scale(x='shared').interactive()
+        chart = alt.layer(*layers).resolve_scale(x='shared').properties(title='Trends in movie releases over time for the top 5 production countries').interactive()
         st.altair_chart(chart, use_container_width=True)
         
 
