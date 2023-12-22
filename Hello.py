@@ -107,12 +107,6 @@ def run():
     #### PART 1 ####
     with st.container():
         st.title("Part 1 : XX")
-        st.subheader("XXX")
-        
-        gen.plot_generations_movie_releases(movies_summary)
-
-        st.subheader("XXX")
-        gen.movie_count_per_generation(movies_summary)
 
         st.subheader("XXX")
         texts.pie_introduction()
@@ -121,9 +115,11 @@ def run():
 
         st.subheader("XXX")
         gen.genres_heatmap(filtered_movies, top_genres)
+        texts.heatmap_analysis()
 
         st.subheader("XXX")
         gen.genres_proportion_per_generation(movies_summary, top_genres)
+        texts.stacked_genres_analysis()
 
         st.subheader("XXX")
         gen.genre_proportion_for_generation(filtered_movies)
@@ -173,16 +169,16 @@ def run():
         emo.generation_emotions(movies_emotions)
         texts.emotion_generations()
         
-
-        
-
-
-    
-
-
     # --- FOOTER --- #
     with st.container():
-        st.title("Part 3 : XX")
+        st.title("Part 3 : put Berta after these plots")
+        st.subheader("XXX")
+        
+        gen.plot_generations_movie_releases(movies_summary)
+
+        st.subheader("XXX")
+        gen.movie_count_per_generation(movies_summary)
+
         st.subheader("XXX")
         st.subheader("XXX")
         st.subheader("XXX")

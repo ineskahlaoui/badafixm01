@@ -93,3 +93,33 @@ def pie_analysis():
     format_text("""Short films and crime fiction, each at 11.9%, remind us that brevity can be the soul of wit and intrigue: 
                 they capture the essence of succinct storytelling in the form of short narrative. 
                 But was this always the case? So, how do these preferences play out across different generations?""")
+    
+
+def heatmap_analysis():
+    format_text("""We implemented a heatmap to transition from the broad view of genre popularity 
+                to a focused lens on generational predilections. For the Lost and Greatest generations, 
+                the data is sparse, indicating fewer cinematic offerings or perhaps a limitation in data
+                 collection for those eras. This indicates that movies that are popular across all generations
+                 may not be popular for a specific generation.""")
+    format_text("""However, the Baby Boomers seem to have expanded the cinematic canvas, showing a more diverse
+                 set of preferences, with no single genre overwhelmingly dominating. This diversity grows further 
+                with Gen X, where we see a significant uptick in thriller and drama, indicating a turn towards 
+                intense, thought-provoking cinema. The Millennials and Gen Z take this evolution a step further: 
+                the heatmap shows bright pink and purple with thrillers and drama movies, highlighting a generation 
+                seemingly interested in suspense, action and emotional arcs 💃🕺.""")
+    format_text("""With this generational perspective in mind, we now turn to a stacked bar chart to understand 
+                how these genre preferences stack up proportionally over time, and to see whether a cultural shift in 
+                the ‘moods’ and attitudes of society characterised by genres in noticeable. """)
+
+
+def stacked_genres_analysis():
+    format_text("""The chart above enhances our previous insights, layering genre upon genre to form a proportional
+                 look at cinematic tastes over time. We observe that the Lost generation's bar is dominated by a 
+                single genre, Short Films, whereas the ensuing generations display a more 'mixed' mix, 
+                indicating a broadening of interests and perhaps, an increase in the variety of films being produced. 
+                This is not surprising, since at that time period the Lost generation’s focus was short films: 
+                longer films, that were then categorised into genres themselves, were only introduced at the end of that
+                 generation.""")
+    format_text("""As we move from left to right, from oldest to newest generation, there’s a visible diversification 
+                in genres consumed. The Silent Generation's bar shows an increase in dramas and thrillers, 
+                a pattern that's consistently amplified in almost all following generations.""")
