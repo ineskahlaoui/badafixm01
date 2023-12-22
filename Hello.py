@@ -106,13 +106,10 @@ def run():
         with st.sidebar:
             st.subheader("About the project")
             st.write("How do movie genres differ in the realm of emotions? We take a historical look over a century-long period, and explore the intentional emotional injections by film producers, be they thrill, romance, fear, or joy. Leveraging the movie plot summaries and their corresponding metadata, we use NLP techniques to extract emotions and sentiment scores from the summaries. Our exploration focuses on the shifts in emotional patterns in the cinematic world as genres evolve and fade in the ever-progressing cinematic landscape. We hypothesize that certain emotions, like joy or fear, could persist across generations within specific genres, while others may be sensitive to the global societal background. By investigating the emotion-genre-generation trio, this project aims to reveal the underlying emotional décor that shapes the genres and the role of social generations on this dynamic. This investigation could paint a picture of society's evolving emotional needs and preferences throughout different eras.")
-            st.subheader("Practical information")
-            st.write("This project is a data analysis story about feeling genres emotions. Obviously guys, the website is not complete... With everyone working, I'm sure we'll get a hell of a grade.")
             st.write("The [data](https://www.cs.cmu.edu/~ark/personas/) was collected by David Bamman, Brendan O'Connor, and Noah Smith at the Language Technologies Institute and Machine Learning Department at Carnegie Mellon University, and the project is made with [Streamlit](https://streamlit.io/).")
-            st.write("The project is hosted on [GitHub](https://ineskahlaoui.github.io/badafixm01/)")
-            st.subheader("The team")
-            st.write("[Inès Kahlaoui](https://www.linkedin.com/in/in%C3%A8s-kahlaoui-0862b71b8), [Mya Lahjouji](https://www.linkedin.com/in/mya-lahjouji-b05457233), [Berta Céspedes](https://www.linkedin.com/in/bertacespedes), Xiaocheng Zhang and [Fernando Meireles](https://www.linkedin.com/in/fernando-augusto-meireles-948a58157)")
-            st.write("External libraries and frameworks used : ... to be completed ...")
+            st.write("The website is hosted on [GitHub](https://ineskahlaoui.github.io/badafixm01/), but the backbone of the project is hosted on the following [repository](https://github.com/epfl-ada/ada-2023-project-badafixm01/tree/main)]")
+            st.subheader("The team: Badafixm01")
+            st.write("[Inès Kahlaoui](https://www.linkedin.com/in/in%C3%A8s-kahlaoui-0862b71b8), [Mya Lahjouji](https://www.linkedin.com/in/mya-lahjouji-b05457233), [Berta Céspedes](https://www.linkedin.com/in/bertacespedes), [Xiaocheng Zhang](linkedin.com/in/xiaocheng-zhang-21a740225) and [Fernando Meireles](https://www.linkedin.com/in/fernando-augusto-meireles-948a58157)")
 
     # --- DATA STORY --- #
             
