@@ -15,6 +15,23 @@ import texts
 
 LOGGER = get_logger(__name__)
 
+def set_css():
+        css = """
+        <style>
+            /* Main page layout */
+            .main .block-container {
+                padding-right: 12rem;   
+                padding-left: 12rem;    
+            }
+            .justified-text {
+                text-align: justify;
+                text-justify: inter-word;
+            }
+            .size-text { font-size: 18px; }
+        </style>
+        """
+        st.markdown(css, unsafe_allow_html=True)
+
 ## --- IMAGES AND ANIMATIONS --- #
 # movie_animation = load_animation("https://lottie.host/30a4816a-5b22-400d-92ab-30115ded0ab5/oh3wyo4dat.json")
 # example_img = Image.open("images/example_img.JPG")
@@ -41,6 +58,7 @@ emotions = get_data('MovieIDs_emotions.csv', index_col=True)
 emotions_pca = get_csv('emotion_pca.csv')
 emotions_tsne = get_csv('emotion_tsne.csv')
 regression = get_csv('regression_params.csv')
+word_clouds = get_csv('word_cloud.csv')
 
 filtered_movies = movies_summary.loc[movies_summary['Generation'] != 'Unknown Generation']
 movies_emotions = emotions.merge(filtered_movies, on='Wikipedia Movie ID', how='left')
@@ -72,22 +90,6 @@ def run():
     def upload_css(file_name):
         with open(file_name) as f:
             st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-
-    def set_css():
-        css = """
-        <style>
-            /* Main page layout */
-            .main .block-container {
-                padding-right: 12rem;   
-                padding-left: 12rem;    
-            }
-            .justified-text {
-                text-align: justify;
-                text-justify: inter-word;
-            }
-        </style>
-        """
-        st.markdown(css, unsafe_allow_html=True)
 
     set_css()
 
@@ -186,8 +188,11 @@ def run():
         st.subheader("XXX")
         
         hist.plot_generations_movie_releases(movies_summary, generations)
+        st.subheader("XXX")
+        hist.generations_movie_releases_countries(movies_summary, generations)
 
         st.subheader("XXX")
+        hist.wordcloud(word_clouds)
         st.subheader("XXX")
         st.subheader("XXX")
      

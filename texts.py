@@ -1,11 +1,10 @@
 import streamlit as st
 
-def format_text(text):
-    st.markdown("""<div class='justified-text'>""" + text +""" </div>""", unsafe_allow_html=True)
+def format_text(text, size= "18px"):
+    st.markdown(f"""<div class='justified-text' style='text-align: justify; font-size: {size};'>{text}</div>""", unsafe_allow_html=True)
 
 def introduction():
-    st.markdown("""<div class='justified-text'>
-    Dear movie adepts and graph gurus, welcome to a spectacle where movies and charts converge into a narrative as captivating as cinema itself…
+    format_text("""Dear movie adepts and graph gurus, welcome to a spectacle where movies and charts converge into a narrative as captivating as cinema itself…
     In our story, every frame is a figure and every genre a graph, as we delve into the rich dataset of 
     <a href="https://www.cs.cmu.edu/~ark/personas/" target="_blank">movies</a> and 
     <a href="https://saifmohammad.com/WebPages/AffectIntensity.htm" target="_blank">Emotion Intensity Lexicon</a> to see not just the 
@@ -15,8 +14,7 @@ def introduction():
     peace, crises, and prosperity in waves of drama, mystery, romance, and more. 
     No prior knowledge is required, just an appetite for discovery and a love for the silver screen.
     So, pop the popcorn, dim the lights, and let this data illuminate this new story of 
-    cinema like you’ve never before. 🍿 Cameras rolling... Action! 🎬 
-    </div>""", unsafe_allow_html=True)
+    cinema like you’ve never before. 🍿 Cameras rolling... Action! 🎬 """)
 
 
 def regression():
