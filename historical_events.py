@@ -5,8 +5,9 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
-import colorsys
 from collections import Counter
+
+default_colors = px.colors.qualitative.Plotly
 
 # define periods
 periods = [
@@ -107,38 +108,72 @@ def generations_movie_releases_countries(movies_summary, generations):
 
 
 ## wordcloud of movie summaries
-def wordcloud(word_cloud):
-    emotions_list = [ emotion.strip() for sublist in word_cloud.iloc[:, 0].dropna().astype(str).str.split(',')
-        for emotion in sublist if isinstance(emotion, str) and emotion.strip()
-    ]
+def wordcloud(freq):
 
-    # Recalculate the frequency of each unique emotion
-    frequencies = Counter(emotions_list)
+    year_ranges = [[1947, 1952], [1980, 1985], [2003, 2008], [1996, 2001]]
+    periods = ['Post World War 2', 'Post Cold War', 'Post 9/11', 'a control period']
 
-    # Display the most common emotions and their counts
-    frequencies.most_common(10)
+    for year_range, period in zip(year_ranges, periods):
+        wc = freq[(freq['date'] >= year_range[0]) & (freq['date'] <= year_range[1])]
+        summed_frequencies = wc.drop('date', axis=1).sum().to_dict()
+        words = list(summed_frequencies.keys())
+        frequencies = list(summed_frequencies.values())
+        
+        # assign a color to each word
+        word_colors = [default_colors[i % len(default_colors)] for i in range(len(words))]
+        sizes = [np.log(v+1)*10 for v in frequencies]  # log to reduce range of sizes
+        x_positions = np.random.rand(len(words))  
+        y_positions = np.random.rand(len(words))  
+
+        # scatter plot
+        trace = go.Scatter(
+            x=x_positions,
+            y=y_positions,
+            text=words,
+            mode='text',
+            textfont={'size': sizes, 'color': word_colors},
+            hoverinfo='text'
+        )
+
+        layout = go.Layout(
+            title=f"Emotion word cloud for {period} ({year_range[0]}-{year_range[1]})",
+            xaxis={'showgrid': False, 'showticklabels': False, 'zeroline': False},
+            yaxis={'showgrid': False, 'showticklabels': False, 'zeroline': False}
+        )
+
+        fig = go.Figure(data=[trace], layout=layout)
+        st.plotly_chart(fig, use_container_width=True)
 
 
-    positions = {word: (np.random.rand(), np.random.rand()) for word in frequencies}
+def world_map(ISO_movie_counts):
+    percentiles = np.percentile(ISO_movie_counts['Movie count'], [10, 20, 30, 40, 50, 60, 70, 80, 90])
+    max = ISO_movie_counts['Movie count'].max()
+    color_scale = [
+        [0, '#fecb51'],  # yellow
+        [percentiles[1]/max, '#ffa15a'],  # plotly orange
+        [percentiles[3]/max, '#ef553b'],  # plotly red
+        [percentiles[4]/max, '#faeae1'],  # White
+        [percentiles[8]/max, '#636efa'],  # plotly light blue
+        [1, '#ab63fa']   # plotly dark blue
+        ]
+    # choropleth map
+    fig = px.choropleth(ISO_movie_counts, 
+                        locations='ISO alpha', 
+                        color='Movie count', 
+                        hover_name='Country', 
+                        color_continuous_scale=color_scale)
 
-    # Create a scatter plot
-    trace = go.Scatter(
-        x=[pos[0] for pos in positions.values()],
-        y=[pos[1] for pos in positions.values()],
-        text=list(frequencies.keys()),
-        mode='text',
-        textfont={'size': [np.sqrt(frequencies[word]) * 10 for word in frequencies.keys()], 'color': 'black'},
-    )
+    # Update layout
+    fig.update_layout(
+        title_text='Global amount of movies distribution',
+        title_x=0.5,
+        title_font=dict(size=24),
+        geo=dict(
+            showframe=False,
+            showcoastlines=False,
+            projection_type='natural earth'
+        ),
+        width=700,  height=600)
 
-    # Define layout with no axis and white background
-    layout = go.Layout(
-        xaxis={'showgrid': False, 'showticklabels': False, 'zeroline': False},
-        yaxis={'showgrid': False, 'showticklabels': False, 'zeroline': False},
-        plot_bgcolor='white',
-        margin={'l': 0, 'r': 0, 't': 0, 'b': 0}
-    )
-
-    # Create and show the figure
-    fig = go.Figure(data=[trace], layout=layout)
-    fig.update_layout(showlegend=False)
+    # Show the plot
     st.plotly_chart(fig, use_container_width=True)

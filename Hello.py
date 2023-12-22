@@ -63,7 +63,8 @@ emotions = get_data('MovieIDs_emotions.csv', index_col=True)
 emotions_pca = get_csv('emotion_pca.csv')
 emotions_tsne = get_csv('emotion_tsne.csv')
 regression = get_csv('regression_params.csv')
-word_clouds = get_csv('word_cloud.csv')
+word_clouds = get_csv('wordfreq_year.csv')
+ISO_movie_counts = get_csv('country_movie_counts.csv')
 
 filtered_movies = movies_summary.loc[movies_summary['Generation'] != 'Unknown Generation']
 movies_emotions = emotions.merge(filtered_movies, on='Wikipedia Movie ID', how='left')
@@ -182,9 +183,12 @@ def run():
         hist.generations_movie_releases_countries(movies_summary, generations)
 
         st.subheader("XXX")
+        hist.world_map(ISO_movie_counts)
+
+        st.subheader("XXX")
+        st.subheader("XXX")
         hist.wordcloud(word_clouds)
-        st.subheader("XXX")
-        st.subheader("XXX")
+        
      
         
 if __name__ == "__main__":
