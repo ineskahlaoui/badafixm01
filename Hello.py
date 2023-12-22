@@ -2,10 +2,8 @@ import streamlit as st
 from streamlit.logger import get_logger
 from streamlit_lottie import st_lottie
 import requests
-from PIL import Image
 import altair as alt
 import pandas as pd
-import matplotlib.pyplot as plt
 import generations as gen
 import emotions as emo
 import historical_events as hist
