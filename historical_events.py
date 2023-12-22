@@ -6,20 +6,21 @@ import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
 from collections import Counter
+import ast
 
 default_colors = px.colors.qualitative.Plotly
 
 # define periods
 periods = [
-            {"start": 1914, "end": 1918, "event": "WW1", "color": "lightgrey"},
             {"start": 1939, "end": 1945, "event": "WW2", "color": "lightgrey"},
-            {"start": 1929, "end": 1939, "event": "Great Depression", "color": "lightblue"},
-            {"start": 2007, "end": 2009, "event": "Global Financial Crisis", "color": "lightgreen"}
+            {"start": 1945, "end": 1991, "event": "Cold War", "color": "lightblue"},
+            {"start": 2001, "end": 2002, "event": "9/11", "color": "lightgreen"}
         ]
 
 
 ## Movie releases by year (filtered with generations)
 def plot_generations_movie_releases(movies_summary, generations):
+    movies_summary = movies_summary[movies_summary['Movie Release Year'] < 2013]
     selected_generations = st.multiselect("Select Generations", generations, default=generations)
 
     if not selected_generations:
@@ -62,25 +63,31 @@ def plot_generations_movie_releases(movies_summary, generations):
 
 ## movie distribution per top 5 countries
 def generations_movie_releases_countries(movies_summary, generations):
-    movies_summary = movies_summary[movies_summary['Movie Countries'].apply(lambda x: x != [''])]
-    top_countries = movies_summary['Movie Countries'].value_counts().head(6).index.tolist()
-    filtered_movies = movies_summary[movies_summary['Movie Countries'].isin(top_countries)]
+    movies_summary = movies_summary[movies_summary['Movie Release Year'] < 2013]
+    movies_summary['Movie Countries'] = movies_summary['Movie Countries'].apply(ast.literal_eval)
+    
+    movies_summary['Movie Country'] = movies_summary['Movie Countries'].apply(lambda x: x[0] if x else None)
+    movies_summary = movies_summary[movies_summary['Movie Country'] != '']
+    top_countries = movies_summary['Movie Country'].value_counts().head(5).index.tolist()
+    print(movies_summary['Movie Country'][:40])
+    
+    filtered_movies = movies_summary[movies_summary['Movie Country'].isin(top_countries)]
 
-    selected_generations = st.multiselect("Select Generations ok", generations, default=generations)
+    selected_generations = st.multiselect("Please select generations", generations, default=generations)
 
     if not selected_generations:
         st.error("Please select at least one generation.")
     else:
         # filtering data based on the selected generations
         filtered_movies = filtered_movies[filtered_movies['Generation'].isin(selected_generations)]
-        yearly_data = filtered_movies.groupby(['Movie Release Year', 'Movie Countries']).size().reset_index(name='Number of Movies')
+        yearly_data = filtered_movies.groupby(['Movie Release Year', 'Movie Country']).size().reset_index(name='Number of Movies')
         
         # base chart for the lines
         line_chart = alt.Chart(yearly_data).mark_line().encode(
                 x='Movie Release Year:O',
                 y='Number of Movies:Q',
-                color='Movie Countries:N',  # Update to 'Movie Countries'
-                tooltip=['Movie Release Year', 'Number of Movies', 'Movie Countries']  # Update tooltip
+                color='Movie Country:N',  # Update to 'Movie Countries'
+                tooltip=['Movie Release Year', 'Number of Movies', 'Movie Country']  # Update tooltip
             )
 
         # shaded areas & corresponding labels for period
@@ -153,8 +160,8 @@ def world_map(ISO_movie_counts):
         [percentiles[1]/max, '#ffa15a'],  # plotly orange
         [percentiles[3]/max, '#ef553b'],  # plotly red
         [percentiles[4]/max, '#faeae1'],  # White
-        [percentiles[8]/max, '#636efa'],  # plotly light blue
-        [1, '#ab63fa']   # plotly dark blue
+        [percentiles[8]/max, '#ab63fa'],  # plotly purple
+        [1, '#636efa']   # plotly dark blue
         ]
     # choropleth map
     fig = px.choropleth(ISO_movie_counts, 

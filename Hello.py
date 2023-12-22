@@ -175,7 +175,7 @@ def run():
         
     #### PART 3 ####   
     with st.container():
-        st.title("Part 3 : put Berta after these plots")
+        st.title("When historical events come into play")
         st.subheader("XXX")
         
         hist.plot_generations_movie_releases(movies_summary, generations)
