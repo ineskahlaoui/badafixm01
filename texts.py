@@ -292,3 +292,91 @@ def sentiment_analysis():
                 love and scare. And short films? They hit a sentimental peak with Gen X, showing sometimes 
                 less is more, except for Gen Alpha, who are probably too busy with virtual reality to bother 
                 with short old-school flicks!""")
+    
+
+def movie_releases_intro():
+    format_text("""Nothing puts as more in our feels than life itself! 
+                Ever felt like the exact type of movie you wanted to watch was in the cinema? 
+                This may be a coincidence, or not... Do movies reflect what society has gone through recently? 
+                To investigate the relationship between the emotions portrayed in movies in different time periods, 
+                we will first look into how the movie industry has changed over generations, and how time has impacted 
+                this. More specifically, throughout this section we will delve into historical events that 
+                profoundly resonated across the globe.""")
+    format_text("""Starting with <strong>World War II (1939-1945)</strong>, 
+                we will explore the emotional imprint left by this a monumental confrontation world-wide, 
+                and its effect on movie production.""")
+    format_text("""Similarly, the <strong>Cold War era (1947-1960)</strong> was characterized by a high-stress rivalry 
+                among the world’s leading nations. This cast a long shadow over the latter half 
+                of the 20th century, and we expect movies at this time to have served as a lens 
+                through which audiences could process the complex global tension.""")
+    format_text("""Lastly, the tragic events of <strong>September 11th, 2001</strong>, 
+                represent another pivotal moment with a profound emotional and cultural impact. 
+                The aftermath of these attacks saw a surge in films that delved into themes of national security, 
+                international politics, and the complexities of global threats to peace and safety. """, bottom_margin="30px")
+    format_text("""First up, how has the number of movies released evolved with time? 
+                It’s like making popcorn – slow at first, then bursting forth in an explosion of cinematic abundance! 
+                 Below, we see how cinema has mirrored society as generations progress.""")
+    
+
+def movie_releases_analysis():
+    format_text("""The above graph reflects the journey from black-and-white 
+                classics to 3D spectacles since it is clear that technological advancements 
+                have really paved the way for an exponential growth in cinema production. 
+                If examining the historical periods mentioned above, during WW2 there is a clear 
+                decrease in movie production. Moreover, in the Cold War era, despite having an overall 
+                increase in production, there were lots of ups and downs. On the other hand, after 9/11 
+                there is not an observable decrease, and we infer that filmmakers channelled the complexities
+                 arisen into new stories.""")
+    format_text("""Naturally, the progression of movie production over time has varied 
+                significantly from one country to another, some being hubs of innovation and cultural 
+                melting pots, which turned them into movie-producing powerhouses. 
+                We delve into these geographical shifts by plotting the distribution of number 
+                of movies released per country in this interactive world map.""")
+    
+def world_map_analysis():
+    format_text("""The graph above illustrates how certain regions have been more prolific 
+                in their cinematic output, with the strongest concentration of movie production appearing in North America. 
+                This is indicated by the deep blue shading, which suggests a movie count significantly higher than 20,000,
+                 reflecting the region's status as a dominant force in the film industry.""")
+    format_text("""Europe and Asia also show substantial contributions to global cinema, 
+                as evidenced by the varied shades of purple and pink, indicating a from moderate to 
+                high movie contributions. However, these figures don't come close to the towering movie
+                 output represented by the deep blue that marks the film industry of the region akin to the USA.""")
+    format_text("""In contrast, Africa, South America, and others display lighter shades, 
+            implying a lower volume of movie production.""") 
+    format_text("""The global map gives us a snapshot of movie production distribution, 
+                highlighting regional leaders. To understand the dynamics behind these numbers, 
+                let's delve into the line graph below, which traces the historical rise and fall of 
+                movie production providing context to the flow of cinema across the top producing countries.""")
+    format_text("""The United States demonstrates a dramatic surge in movie 
+                production starting around the early 20th century, with a particularly 
+                pronounced increase from 1925-1935 and from the 1980s up to the early 2000s. India shows 
+                a steady increase in film production from the mid-20th century, with growth becoming more 
+                pronounced from the 1970s onwards. This aligns with the expansion of Bollywood and its global influence.
+                 The line for Japan shows modest, stable growth throughout the 20th century, with no sharp peaks or drops.
+                 This suggests a consistent film production rate without the dramatic fluctuations seen in other regions.
+                 France and the United Kingdom have relatively lower and stable production numbers compared to the USA 
+                and India, with slight increases and decreases throughout the century but without any drastic changes.""")
+    format_text("""Regardless of the peak steepness, there is a clear increase 
+                in production for the five countries between the late 20th century 
+                and the beginning of the 21st century. This uptick marks a vibrant era in film, 
+                driven by technology breakthroughs, and a growing appetite for varied narratives, 
+                taking the movie business to exciting new levels. Conversely, after 2006 there is a decrease
+                 trend for all countries, which suggests a possible shift in the industry, perhaps due to the
+                 rise of digital streaming platforms or changing consumer viewing habits.""")
+    format_text("""Regarding the marked historical period on the graph, during World War II, 
+                there's a noticeable dip in movie production for most countries, which is a likely 
+                reflection of the global focus on the war effort. The Cold War period doesn't show a 
+                significant decline in movie production for the countries represented, suggesting that 
+                the film industry continued despite the geopolitical tensions. As mentioned previously, 
+                9/11 did not result in a decrease in movie production.""", bottom_margin="40px")
+    
+    format_text("""So… coming back to the main question! How does time and history affect the movie industry in terms of emotions? For this analysis, we used a Natural Language Processing (GoEmotions) algorithm, which when inputted a text, it returns one or several emotions out of a 28 emotions dictionary. In this section we seek to investigate whether historical events are reflected in emotions portrayed in movies were affected by history. """)
+    format_text("""The input to the model were the movie plot summaries, which resulted in a range of predicted emotions for each movie, and these could be grouped to represent emotions over time. As stablished, the periods that will be investigated are WW2, Cold war and 9/11, with an additional control period. The years chosen for the analysis are 1947-1952 (post-WW2 era), 1980-1985 (Cold War era), 2003-2008 (post-9/11 era) and 1996-2001 (control). For all a fixed period of 5 years was used. The start of this period was fixed to two years after the historical event for WW2 and 9/11, to allow a buffer for the film industry to respond to and reflect these events in cinema. For the Cold War, a mid-period range was selected to capture the ongoing sentiments during this prolonged era, while the control period of 1996-2001 offers a baseline against which to measure changes in emotional trends in cinema outside of these major historical contexts.""")
+    format_text("""To visually represent the range of emotions in these time periods we employed the technique of creating word clouds with the words extracted by GoEmotions from the movie plots. The size of words within these clouds correspond to their frequency of occurrence. These can be seen below.""")
+
+
+
+def world_cloud_analysis():
+    format_text("""Looking at all the above, the first observation is that there is not a major difference between historical and the control period. Realization is dominant and common across all word clouds, which we believe is an emotion that can be easily found in every movie. Thus, despite its abundant frequency, we will focus on the rest. In the historical events, there is a clear pattern of emotions such as disappointment, fear, anger, sadness, annoyance, being frequent. Nevertheless, other emotions such as joy are also consistently present. Moreover, the control period did not exhibit a significant divergence from this pattern. This suggests an enduring diversity of emotional experiences depicted in cinema!""")
+    format_text("""It is important to note the model used was pre-trained on user tweets, which often have emotional expressions compared to movie plot summaries. This disparity in the training data could potentially explain any limitations in our findings. The model may not have performed as effectively when applied to movie-related text, leading to potential inaccuracies in the analysis.""")

@@ -181,19 +181,19 @@ def run():
     #### PART 3 ####   
     with st.container():
         st.title("When historical events come into play")
-        st.subheader("XXX")
-        
-        hist.plot_generations_movie_releases(movies_summary, generations)
-        st.subheader("XXX")
-        hist.world_map(ISO_movie_counts)
 
-        st.subheader("XXX")
+        
+        texts.movie_releases_intro()
+        hist.plot_generations_movie_releases(movies_summary, generations)
+        texts.movie_releases_analysis()
+        hist.world_map(ISO_movie_counts)
+        texts.world_map_analysis()
         
         hist.generations_movie_releases_countries(movies_summary, generations)
 
-        st.subheader("XXX")
-        st.subheader("XXX")
+        
         hist.wordcloud(word_clouds)
+        texts.world_cloud_analysis()
         
      
         
