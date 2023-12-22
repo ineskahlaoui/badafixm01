@@ -49,7 +49,7 @@ def genres_proportion(movies_summary, generations):
 # Proportion of top 10 genres of whole dataset for each generation
 def genres_proportion_per_generation(movies_summary, top_genres, generations):
     # include only the top genres
-    movies_top_genres = movies_summary[movies_summary['Main Genre'].isin(top_genres)]
+    movies_top_genres = movies_summary[movies_summary['Main Genre'].isin(top_genres)].copy()
     movies_top_genres['Generation'] = pd.Categorical(movies_top_genres['Generation'], categories=generations, ordered=True)
 
     # occurrences of top genres within each generation
@@ -84,7 +84,7 @@ def genres_proportion_per_generation(movies_summary, top_genres, generations):
 # Proportion of top 10 genres of whole dataset for each generation - heatmap version
 def genres_heatmap(movies_summary, top_genres, generations):
     # Filter for top genres and calculate counts
-    top_genre_data = movies_summary[movies_summary['Main Genre'].isin(top_genres)]
+    top_genre_data = movies_summary[movies_summary['Main Genre'].isin(top_genres)].copy()
 
     # chronological order
     top_genre_data['Generation'] = pd.Categorical(top_genre_data['Generation'], categories=generations, ordered=True)
@@ -150,7 +150,7 @@ def genre_porportion_for_generation(movies_summary, generations):
 def genre_proportion_for_generation(movies_summary_gen, generations):
 
     # remove generation alpha as not relevant in the analysis
-    movies_summary_gen = movies_summary_gen[movies_summary_gen['Generation'] != 'Generation Alpha']
+    movies_summary_gen = movies_summary_gen[movies_summary_gen['Generation'] != 'Generation Alpha'].copy()
     # compute top 10 genres for each generation separately
     top_genres_per_generation = (
         movies_summary_gen.groupby(['Generation', 'Main Genre'])
