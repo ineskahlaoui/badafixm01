@@ -185,10 +185,11 @@ def run():
         
         hist.plot_generations_movie_releases(movies_summary, generations)
         st.subheader("XXX")
-        hist.generations_movie_releases_countries(movies_summary, generations)
+        hist.world_map(ISO_movie_counts)
 
         st.subheader("XXX")
-        hist.world_map(ISO_movie_counts)
+        
+        hist.generations_movie_releases_countries(movies_summary, generations)
 
         st.subheader("XXX")
         st.subheader("XXX")
