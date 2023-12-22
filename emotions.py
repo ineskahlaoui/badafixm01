@@ -218,11 +218,11 @@ def regression_heatmap(df_params):
     st.altair_chart(heatmap + text, use_container_width=True)
 
 
-    
+# overall sentiment score distribution    
 def sentiment_score_distribution(movies_summary):
     try:
         # histogram of sentiment scores
-        chart = alt.Chart(movies_summary).mark_bar(opacity=0.7, color='skyblue').encode(
+        chart = alt.Chart(movies_summary).mark_bar(opacity=0.9, color='#1bd3f3').encode(
             alt.X('Sentiment score plot', bin=alt.Bin(maxbins=20), title='Sentiment score'),
             alt.Y('count()', title='Frequency')
         ).properties(width=600,height=400).interactive()
@@ -235,3 +235,25 @@ def sentiment_score_distribution(movies_summary):
             **An error has occured when plotting of this function. Please reload the page**
         """
         )
+
+
+## average sentiment score per generation for certain genres
+def average_sentiment_score(movies_summary):
+    fig = make_subplots(rows=2, cols=2, subplot_titles=[f'Average Sentiment Score for {genre}' for genre in genres])
+
+    for i, genre in enumerate(genres):
+        row = (i // 2) + 1
+        col = (i % 2) + 1
+        
+        genre_data = movies_summary[movies_summary['Main Genre'] == genre]
+        avg_sentiment = genre_data.groupby('Generation')['Sentiment score plot'].mean()
+        sorted_avg_sentiment = avg_sentiment.reindex(generations).fillna(0)
+        
+        # chart architecture
+        trace = go.Bar(x=sorted_avg_sentiment.index, y=sorted_avg_sentiment.values, name=genre, marker_color='#1bd3f3')
+        fig.add_trace(trace, row=row, col=col)
+        fig.update_xaxes(title_text='Generation', row=row, col=col)
+        fig.update_yaxes(title_text='Average sentiment score', row=row, col=col)
+
+    fig.update_layout(height=800, width=800, showlegend=False)
+    st.plotly_chart(fig, use_container_width=True)

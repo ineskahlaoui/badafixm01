@@ -142,6 +142,13 @@ def run():
         texts.parallel_genres_intro()
         gen.genre_proportion_for_generation(filtered_movies, generations)
         texts.parallel_genres_analysis()
+
+        texts.sentiment_score_distribution()
+        emo.sentiment_score_distribution(movies_summary)
+
+        texts.sentiment_intro()
+        emo.average_sentiment_score(movies_summary)
+        texts.sentiment_analysis()
             
     #### PART 2 ####       
     with st.container():

@@ -267,3 +267,23 @@ def generations_explained():
                 not just through the values they uphold and the culture they create but also through the art 
                 they consume and produce, including the movies that define their times.
     """)
+
+def sentiment_score_distribution():
+    format_text("""TO BE ADDED""")
+
+
+def sentiment_intro():
+    format_text("""We decided to take a closer look at 4 of the main genres in the dataset, 
+    and analyse the overall sentiment score of the movie plot summaries for each genre. """, bottom_margin = "40px")
+
+def sentiment_analysis():
+    format_text("""The Lost Generation's sentiment score is like a mysterious zero, 
+                not because they didn't feel anything, but because their movie plot summaries got lost in time! 
+                Thrillers roller-coastered through generations, from being a hit escape room for the Silent 
+                generation, to not quite thrilling for the Greatest generation. """)
+    format_text("""On the other hand, Baby Boomers and Gen X jumped back on the thrill ride, 
+                while Millennials and Gen Z swiped left for deeper plots and internet vibes 🕺. 
+                Romantic comedies and horrors zigzagged similarly, with each generation scripting their own 
+                love and scare. And short films? They hit a sentimental peak with Gen X, showing sometimes 
+                less is more, except for Gen Alpha, who are probably too busy with virtual reality to bother 
+                with short old-school flicks!""")
