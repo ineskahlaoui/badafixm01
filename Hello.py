@@ -115,7 +115,9 @@ def run():
         gen.movie_count_per_generation(movies_summary)
 
         st.subheader("XXX")
+        texts.pie_introduction()
         gen.genres_proportion(movies_summary)
+        texts.pie_analysis()
 
         st.subheader("XXX")
         gen.genres_heatmap(filtered_movies, top_genres)
