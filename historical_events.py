@@ -69,7 +69,6 @@ def generations_movie_releases_countries(movies_summary, generations):
     movies_summary['Movie Country'] = movies_summary['Movie Countries'].apply(lambda x: x[0] if x else None)
     movies_summary = movies_summary[movies_summary['Movie Country'] != '']
     top_countries = movies_summary['Movie Country'].value_counts().head(5).index.tolist()
-    print(movies_summary['Movie Country'][:40])
     
     filtered_movies = movies_summary[movies_summary['Movie Country'].isin(top_countries)]
 
