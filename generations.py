@@ -88,7 +88,7 @@ def genres_heatmap(movies_summary, top_genres, generations):
 
     # chronological order
     top_genre_data['Generation'] = pd.Categorical(top_genre_data['Generation'], categories=generations, ordered=True)
-    genre_counts = top_genre_data.groupby(['Generation', 'Main Genre']).size().reset_index(name='Count')
+    genre_counts = top_genre_data.groupby(['Generation', 'Main Genre'], observed = True).size().reset_index(name='Count')
 
     # heatmap architecture
     rainbow_colors = sorted(default_colors, key=lambda rgb: colorsys.rgb_to_hsv(*[int(rgb.lstrip('#')[i:i+2], 16) for i in (0, 2, 4)]))
@@ -169,7 +169,7 @@ def genre_proportion_for_generation(movies_summary_gen, generations):
     # manually pre-computed percentiles
     color_scale = [[0, '#636EFA'],[0.009, '#19D3F3'],[0.051, '#00CC96'],[0.065, '#B6E880'],[0.080, '#FFA15A'],[0.092, '#FECB52'],
                    [0.109, '#FF6692'],[0.175, '#FF97FF'],[0.225, '#EF553B'],[1, '#AB63FA']]
-    genre_order = (top_genres_per_generation.groupby('Main Genre')['Count'].sum().sort_values(ascending=False).index.tolist())
+    genre_order = (top_genres_per_generation.groupby('Main Genre', observed = True)['Count'].sum().sort_values(ascending=False).index.tolist())
     fig = px.parallel_categories(top_genres_per_generation, 
                                  dimensions=['Generation', 'Main Genre'], color='Count', 
                                  color_continuous_scale=color_scale)
